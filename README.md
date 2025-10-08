@@ -1,3 +1,4 @@
 # Daily Grind
 
-This is an assignment for COMP214 - Advanced Database Concepts
+## COMP214 - Advanced Database Concepts
+🎉 This is a group assignment 🎉

@@ -4,9 +4,11 @@ export const getAllCoffees = async (req, res) => {
     try {
         const connection = await getConnection();
 
-        const coffees = await connection.execute('SELECT * FROM coffees');
+        const coffees = await connection.execute('SELECT * FROM employee');
 
-        res.status(200).json(coffees);
+        const data = coffees.rows;
+
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -16,11 +18,13 @@ export const getCoffee = async (req, res) => {
     try {
         const connection = await getConnection();
 
-        const coffee = await connection.execute('SELECT * FROM coffees WHERE id = :id', [req.params.id]);
+        const coffee = await connection.execute('SELECT * FROM coffee WHERE id = :id', [req.params.id]);
 
         if (!coffee) return res.status(404).json({ message: 'Coffee not found' });
-        
-        res.status(200).json(coffee);
+
+        const data = coffee.rows;
+
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

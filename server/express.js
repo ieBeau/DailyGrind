@@ -5,6 +5,7 @@ import compress from "compression";
 import cors from "cors";
 import helmet from "helmet";
 
+import coffeeRoutes from './routes/coffee.route.js';
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.use(compress());
 app.use(helmet());
 app.use(cors());
 
+app.use('/api/coffees', coffeeRoutes);
 
 export default app;

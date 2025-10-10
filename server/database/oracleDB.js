@@ -1,8 +1,8 @@
+import 'dotenv/config';
+
 import { configDB } from "../../config/config.js";
 
 import oracleDB from "oracledb";
-
-import 'dotenv/config';
 
 oracleDB.outFormat = oracleDB.OUT_FORMAT_OBJECT;
 

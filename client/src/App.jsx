@@ -1,14 +1,15 @@
-import './App.css'
+import './styles/main/App.css'
 
-import CoffeeList from "./data/CoffeeList";
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./scenes/Home";
 
 function App() {
-
   return (
     <>
-      <h1>Daily Grind</h1>
-      
-      <CoffeeList />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </>
   )
 }

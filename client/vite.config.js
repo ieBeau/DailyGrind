@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => {
     plugins: [react()],
     preview: {
       allowedHosts: [
-        'dailygrind.onrender.com'
+        'https://dailygrind-coffee.onrender.com'
       ]
     },
     server: {

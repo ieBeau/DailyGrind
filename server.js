@@ -6,8 +6,9 @@ app.get("/", (req, res) => {
 });
 
 app.listen(configServer.port, (err) => {
-  if (err) console.error(`Error starting server: ${err}`);
-  console.log(`Server running at http://localhost:${configServer.port}/`);
+  configServer.env === 'development'
+    ? console.log(`Server running on http://localhost:${configServer.port}/`)
+    : console.log(`Server running on https://dailygrind-server.onrender.com`);
 });
 
 export default app;

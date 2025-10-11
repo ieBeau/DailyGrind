@@ -35,7 +35,7 @@ export default function CoffeeList() {
     }
   }
 
-  if (loading) return <p>Loading coffees...</p>;
+  if (loading) return <p>Loading coffees... This could take a minute</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
   return (

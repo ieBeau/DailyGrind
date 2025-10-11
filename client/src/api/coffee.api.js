@@ -1,5 +1,9 @@
+const API_BASE = import.meta.env.DEV
+  ? "http://localhost:3000"
+  : "https://dailygrind-server.onrender.com";
+
 const getCoffees = async function () {
-    const data = await fetch("/api/coffees", {
+    const data = await fetch(`${API_BASE}/api/coffees`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -14,7 +18,7 @@ const getCoffees = async function () {
 };
 
 const getCoffeeById = async function (id) {
-    const data = await fetch(`/api/coffees/${id}`, {
+    const data = await fetch(`${API_BASE}/api/coffees/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

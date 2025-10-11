@@ -1,6 +1,6 @@
 .coffee-card-container {
-    flex-direction: row;
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
     gap: 10px;
     margin-bottom: 10px;

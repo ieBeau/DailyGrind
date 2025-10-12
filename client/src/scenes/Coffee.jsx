@@ -6,7 +6,7 @@ export default function Coffee () {
     return (
         <div className='coffee'>
             
-            <h2>☕ Coffee Menu</h2>
+            <h2 className='coffee-menu-title'>Coffee Menu</h2>
             
             <CoffeeList />
             

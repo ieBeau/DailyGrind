@@ -1,0 +1,18 @@
+.coffee {
+    
+}
+
+.coffee-menu-title {
+    font-size: 2rem;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 750px) {
+    .coffee {
+        width: 90%;
+        align-items: center;
+        justify-content: center;
+    }
+}

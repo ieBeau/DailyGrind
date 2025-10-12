@@ -1,11 +1,14 @@
 import '../../styles/components/layouts/Header.css';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header () {
+    
+    const navigate = useNavigate();
+    
     return (
         <div className='header'>
-            <div className='header-title'>Daily Grind</div>
+            <div className='header-title' onClick={() => navigate('/')}>☕ Daily Grind</div>
 
             <nav>
                 <Link to="/">HOME</Link>

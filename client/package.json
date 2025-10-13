@@ -1,5 +1,5 @@
 {
-  "name": "daily-grind",
+  "name": "daily-grind-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,6 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "nodemon": "^3.1.10",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.4"

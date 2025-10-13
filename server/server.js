@@ -1,5 +1,5 @@
 import { configServer } from "./config/config.js";
-import app from "./server/express.js";
+import app from "./express.js";
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Daily Grind." });

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { configDB } from "../../config/config.js";
+import { configDB } from "../config/config.js";
 
 import oracleDB from "oracledb";
 

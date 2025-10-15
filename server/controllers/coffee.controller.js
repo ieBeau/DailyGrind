@@ -1,8 +1,9 @@
-import getConnection from '../database/oracleDB.js';
+import { getConnection } from '../database/oracleDB.js';
 
 export const getAllCoffees = async (req, res) => {
+    let connection;
     try {
-        const connection = await getConnection();
+        connection = await getConnection();
 
         const coffees = await connection.execute('SELECT * FROM employee');
 
@@ -11,12 +12,21 @@ export const getAllCoffees = async (req, res) => {
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
     }
 };
 
 export const getCoffee = async (req, res) => {
+    let connection;
     try {
-        const connection = await getConnection();
+        connection = await getConnection();
 
         const coffee = await connection.execute('SELECT * FROM employee WHERE EMPNO = :id', [req.params.id]);
 
@@ -27,12 +37,21 @@ export const getCoffee = async (req, res) => {
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
     }
 };
 
 export const createCoffee = async (req, res) => {
+    let connection;
     try {
-        const connection = await getConnection();
+        connection = await getConnection();
         const newCoffee = {
             name: req.body.name,
             origin: req.body.origin,
@@ -45,12 +64,21 @@ export const createCoffee = async (req, res) => {
         res.status(201).json(newCoffee);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
     }
 };
 
 export const updateCoffee = async (req, res) => {
+    let connection;
     try {
-        const connection = await getConnection();
+        connection = await getConnection();
         const updatedCoffee = {
             id: req.params.id,
             name: req.body.name,
@@ -64,12 +92,21 @@ export const updateCoffee = async (req, res) => {
         res.status(200).json(updatedCoffee);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
     }
 };
 
 export const deleteCoffee = async (req, res) => {
+    let connection;
     try {
-        const connection = await getConnection();
+        connection = await getConnection();
 
         const deletedCoffee = await connection.execute('DELETE FROM coffees WHERE id = :id', [req.params.id]);
 
@@ -78,17 +115,34 @@ export const deleteCoffee = async (req, res) => {
         res.status(200).json({ message: 'Coffee deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
     }
 };
 
 export const deleteAllCoffees = async (req, res) => {
+    let connection;
     try {
-        const connection = await getConnection();
+        connection = await getConnection();
 
         await connection.execute('DELETE FROM coffees');
 
         res.status(200).json({ message: 'All coffees deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
     }
 };

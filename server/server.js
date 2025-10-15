@@ -1,14 +1,34 @@
 import { configServer } from "./config/config.js";
+import { initOraclePool, closePool } from './database/oracleDB.js';
+
 import app from "./express.js";
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Daily Grind." });
+const startServer = async () => {
+  try {
+    await initOraclePool(); // ✅ initialize pool once
+  } catch (error) {
+    console.error('⚠️ Failed to initialize database pool:', error);
+    process.exit(1);
+  } finally {
+    app.listen(configServer.port, (err) => {
+      configServer.env === 'development'
+        ? console.log(`Server running on http://localhost:${configServer.port}/`)
+        : console.log(`Server running on https://dailygrind-server.onrender.com`);
+    });
+  }
+};
+
+process.on('SIGINT', async () => {
+  await closePool();
+  process.exit(0);
 });
 
-app.listen(configServer.port, (err) => {
-  configServer.env === 'development'
-    ? console.log(`Server running on http://localhost:${configServer.port}/`)
-    : console.log(`Server running on https://dailygrind-server.onrender.com`);
+process.on('unhandledRejection', async (reason) => {
+  console.error('💥 Unhandled Promise Rejection:', reason);
+  await closePool();
+  process.exit(1);
 });
+
+startServer();
 
 export default app;

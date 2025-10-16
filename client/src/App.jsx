@@ -7,6 +7,7 @@ import Home from "./scenes/Home";
 import Coffee from "./scenes/Coffee";
 
 function App() {
+
   return (
     <>
       <Header />

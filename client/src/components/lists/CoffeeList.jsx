@@ -2,6 +2,9 @@ import '../../styles/components/lists/CoffeeList.css';
 
 import { useEffect, useState } from "react";
 
+// import { addToCart, viewCart } from '../../utils/shoppingCart';
+import { useCart } from '../../context/order.context';
+
 import coffee from "../../api/coffee.api";
 
 import CoffeeCard from "../cards/CoffeeCard";
@@ -26,7 +29,7 @@ export default function CoffeeList() {
     fetchCoffees();
   }, []);
 
-  const [shoppingCart, setShoppingCart] = useState({});
+  const { cart, addItem, removeItem, clearCart } = useCart();
 
   const handleCoffee = (id) => {
     try {
@@ -35,22 +38,13 @@ export default function CoffeeList() {
 
       if (!data) throw new Error("Coffee not found");
 
-      // Update shopping cart
-      setShoppingCart(prevCart => {
-        const updatedCart = { ...prevCart };
-        updatedCart[data.EMPNO] = (updatedCart[data.EMPNO] || 0) + 1;
-        return updatedCart;
-      });
+      addItem(data);
 
-      alert(`Selected coffee: ${data.ENAME} - $${data.SAL}`);
+      console.log("Shopping Cart Updated:", cart);
     } catch (err) {
       setError(err.message);
     }
   }
-
-  useEffect(() => {
-    console.log("Shopping Cart Updated:", shoppingCart);
-  }, [shoppingCart]);
 
   if (loading) return <p>Loading coffees... This could take a minute</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;

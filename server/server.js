@@ -5,7 +5,7 @@ import app from "./express.js";
 
 const startServer = async () => {
   try {
-    await initOraclePool(); // ✅ initialize pool once
+    await initOraclePool();
   } catch (error) {
     console.error('⚠️ Failed to initialize database pool:', error);
     process.exit(1);

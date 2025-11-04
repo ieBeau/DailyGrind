@@ -9,7 +9,7 @@ oracleDB.outFormat = oracleDB.OUT_FORMAT_OBJECT;
 let pool;
 
 export const initOraclePool = async () => {
-  if (pool) return pool; // already initialized
+  if (pool) return pool;
 
   pool = await oracleDB.createPool({
     ...configDB,

@@ -1,11 +1,13 @@
 import { getConnection } from '../database/oracleDB.js';
 
+const COFFEE_PRODUCTS = 'BB_PRODUCT';
+
 export const getAllCoffees = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
 
-        const coffees = await connection.execute('SELECT * FROM employee');
+        const coffees = await connection.execute(`SELECT * FROM ${COFFEE_PRODUCTS}`);
 
         const data = coffees.rows;
 
@@ -28,7 +30,7 @@ export const getCoffee = async (req, res) => {
     try {
         connection = await getConnection();
 
-        const coffee = await connection.execute('SELECT * FROM employee WHERE EMPNO = :id', [req.params.id]);
+        const coffee = await connection.execute(`SELECT * FROM ${COFFEE_PRODUCTS} WHERE IDPRODUCT = :id`, [req.params.id]);
 
         if (!coffee) return res.status(404).json({ message: 'Coffee not found' });
 

@@ -5,3 +5,10 @@
     gap: 10px;
     margin-bottom: 10px;
 }
+
+.coffee-card-image {
+    background-color: #090909;
+    border-radius: 10px;
+    min-width: 100px;
+    min-height: 100px;
+}

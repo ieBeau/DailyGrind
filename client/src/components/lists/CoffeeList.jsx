@@ -34,7 +34,7 @@ export default function CoffeeList() {
   const handleCoffee = (id) => {
     try {
       // Find coffee by id
-      const data = coffees.find(c => c.EMPNO === id);
+      const data = coffees.find(c => c.IDPRODUCT === id);
 
       if (!data) throw new Error("Coffee not found");
 

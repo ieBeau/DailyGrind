@@ -1,22 +1,22 @@
-import './styles/main/App.css'
-
-import { Routes, Route } from "react-router-dom";
-
-import Header from "./components/layouts/Header";
-import Home from "./scenes/Home";
-import Coffee from "./scenes/Coffee";
+import React from 'react';
+import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Layout/Header.jsx';
+import ProductManagement from './scenes/ProductManagement.jsx';
+import './styles/dailygrind.css';
+import Hero from './components/Layout/Hero.jsx';
 
 function App() {
-
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/coffee" element={<Coffee />} />
-      </Routes>
-    </>
-  )
+    <Router>
+      <div className="App">
+        <Header />
+        <Hero />
+        <Routes>
+          <Route path="/" element={<ProductManagement />} />
+          <Route path="/products" element={<ProductManagement />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
-
-export default App
+export default App;

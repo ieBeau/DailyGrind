@@ -1,4 +1,5 @@
 import './styles/main/App.css'
+import './styles/DailyGrind.css'
 
 import { Routes, Route } from "react-router-dom";
 

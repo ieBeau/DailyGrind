@@ -1,0 +1,124 @@
+# =====================================================================
+# CODEOWNERS
+# Defines who is responsible for reviewing and maintaining different
+# parts of the repository.
+# Each line maps a file pattern to one or more GitHub usernames or teams.
+#
+# Format:
+#   <file pattern> <github username(s) or team(s)>
+#
+# Notes:
+# - The last matching pattern takes precedence.
+# - You can specify teams with @org/team-name
+# - Place this file in `.github/`, `docs/`, or the repository root.
+# =====================================================================
+
+# ---------------------------------------------------------------------
+# GLOBAL OWNERSHIP
+# ---------------------------------------------------------------------
+
+# Default owner for all files in the repo.
+# All pull requests that modify any file not covered by more specific
+# rules will request review from @iebeau.
+* @iebeau
+
+
+# ---------------------------------------------------------------------
+# FRONTEND (React / HTML / CSS / JS)
+# ---------------------------------------------------------------------
+# Assign ownership for client-side code and UI assets.
+client/ @iebeau
+client/src/ @iebeau
+client/public/ @iebeau
+
+# File-type based frontend ownership
+*.js @iebeau
+*.jsx @iebeau
+*.ts @iebeau
+*.tsx @iebeau
+*.css @iebeau
+*.scss @iebeau
+*.html @iebeau
+
+
+# ---------------------------------------------------------------------
+# BACKEND (Node.js / Express / API / DB)
+# ---------------------------------------------------------------------
+server/ @iebeau
+api/ @iebeau
+routes/ @iebeau
+controllers/ @iebeau
+models/ @iebeau
+middlewares/ @iebeau
+config/ @iebeau
+
+# Database schemas or SQL scripts
+*.sql @iebeau
+*.mongoose.js @iebeau
+
+
+# ---------------------------------------------------------------------
+# INFRASTRUCTURE & DEPLOYMENT
+# ---------------------------------------------------------------------
+# Ownership for configuration, CI/CD, and deployment files
+Dockerfile @iebeau
+docker-compose.yml @iebeau
+package.json @iebeau
+package-lock.json @iebeau
+.env.example @iebeau
+.github/workflows/ @iebeau
+scripts/ @iebeau
+
+
+# ---------------------------------------------------------------------
+# TESTS
+# ---------------------------------------------------------------------
+tests/ @iebeau
+__tests__/ @iebeau
+*.test.js @iebeau
+*.spec.js @iebeau
+*.test.ts @iebeau
+*.spec.ts @iebeau
+
+
+# ---------------------------------------------------------------------
+# DOCUMENTATION & PROJECT MANAGEMENT
+# ---------------------------------------------------------------------
+README.md @iebeau
+CONTRIBUTING.md @iebeau
+CODE_OF_CONDUCT.md @iebeau
+LICENSE @iebeau
+docs/ @iebeau
+CHANGELOG.md @iebeau
+
+
+# ---------------------------------------------------------------------
+# ASSETS
+# ---------------------------------------------------------------------
+# Assign ownership for images, fonts, and static resources
+assets/ @iebeau
+client/assets/ @iebeau
+*.png @iebeau
+*.jpg @iebeau
+*.jpeg @iebeau
+*.svg @iebeau
+*.gif @iebeau
+*.ico @iebeau
+*.ttf @iebeau
+*.woff @iebeau
+
+
+# ---------------------------------------------------------------------
+# OPTIONAL EXAMPLES (commented out)
+# ---------------------------------------------------------------------
+# Example of shared ownership with a team or collaborator:
+# server/ @iebeau @my-org/backend-team
+# client/ @iebeau @frontend-dev
+#
+# Example of making @iebeau a reviewer only for critical configs:
+# .env @iebeau
+# .github/ @iebeau
+
+# =====================================================================
+# END OF FILE
+# =====================================================================

@@ -1,11 +1,16 @@
 import './styles/main/App.css'
-import './styles/DailyGrind.css'
+import './styles/scenes/DailyGrind.css'
 
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/layouts/Header";
 import Home from "./scenes/Home";
-import Coffee from "./scenes/Coffee";
+import Coffee from "./scenes/Products";
+import Products from "./scenes/products";
+import Basket from "./scenes/basket";
+import Order from "./scenes/order";
+import Reports from "./scenes/reports";
+import Accounts from "./scenes/accounts";
 
 function App() {
 
@@ -14,7 +19,11 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/coffee" element={<Coffee />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/basket" element={<Basket />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/accounts" element={<Accounts />} />
       </Routes>
     </>
   )

@@ -2,8 +2,8 @@ const API_BASE = import.meta.env.DEV
   ? "http://localhost:3000"
   : "https://dailygrind-server.onrender.com";
 
-const getCoffees = async function () {
-    const data = await fetch(`${API_BASE}/api/coffees`, {
+const getProducts = async function () {
+    const data = await fetch(`${API_BASE}/api/products`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -12,13 +12,13 @@ const getCoffees = async function () {
     .then(response => response)
     .catch(error => { throw new Error("Network error: " + error.message) });
 
-    if (!data.ok) throw new Error("Failed to fetch coffees");
+    if (!data.ok) throw new Error("Failed to fetch products");
 
     return data.json();
 };
 
-const getCoffeeById = async function (id) {
-    const data = await fetch(`${API_BASE}/api/coffees/${id}`, {
+const getProductById = async function (id) {
+    const data = await fetch(`${API_BASE}/api/products/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -32,4 +32,4 @@ const getCoffeeById = async function (id) {
     return data.json();
 };
 
-export default { getCoffees, getCoffeeById };
+export default { getProducts, getProductById };

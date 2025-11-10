@@ -1,24 +1,24 @@
-import '../../styles/components/lists/CoffeeList.css';
+import '../../styles/components/lists/ProductList.css';
 
 import { useEffect, useState } from "react";
 
 // import { addToCart, viewCart } from '../../utils/shoppingCart';
 import { useCart } from '../../context/order.context';
 
-import coffee from "../../api/coffee.api";
+import product from "../../api/product.api";
 
-import CoffeeCard from "../cards/CoffeeCard";
+import ProductCard from "../cards/ProductCard";
 
-export default function CoffeeList() {
-  const [coffees, setCoffees] = useState([]);
+export default function ProductList() {
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchCoffees() {
+    async function fetchProducts() {
       try {
-        const data = await coffee.getCoffees();
-        setCoffees(data);
+        const data = await product.getProducts();
+        setProducts(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -26,17 +26,17 @@ export default function CoffeeList() {
       }
     }
 
-    fetchCoffees();
+    fetchProducts();
   }, []);
 
   const { cart, addItem, removeItem, clearCart } = useCart();
 
-  const handleCoffee = (id) => {
+  const handleProduct = (id) => {
     try {
-      // Find coffee by id
-      const data = coffees.find(c => c.IDPRODUCT === id);
+      // Find product by id
+      const data = products.find(c => c.IDPRODUCT === id);
 
-      if (!data) throw new Error("Coffee not found");
+      if (!data) throw new Error("Product not found");
 
       addItem(data);
 
@@ -46,12 +46,12 @@ export default function CoffeeList() {
     }
   }
 
-  if (loading) return <p>Loading coffees... This could take a minute</p>;
+  if (loading) return <p>Loading products... This could take a minute</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
   return (
     <div className="coffee-list-container">
-      {coffees.map((coffee, index) =>  <CoffeeCard key={index} coffee={coffee} handleCoffee={handleCoffee} />)}
+      {products.map((product, index) =>  <ProductCard key={index} product={product} handleProduct={handleProduct} />)}
     </div>
   );
 }

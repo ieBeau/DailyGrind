@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/dailygrind.css';
+import '../styles/scenes/DailyGrind.css';
 
 // Product Management Component
 const ProductManagement = () => {

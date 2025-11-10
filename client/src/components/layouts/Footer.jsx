@@ -1,0 +1,1 @@
+import '../../styles/components/layouts/Footer.css';

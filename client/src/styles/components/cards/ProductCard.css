@@ -1,0 +1,14 @@
+.product-card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.product-card-image {
+  background-color: #090909;
+  border-radius: 10px;
+  min-width: 100px;
+  min-height: 100px;
+}

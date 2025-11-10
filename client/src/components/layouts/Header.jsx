@@ -15,10 +15,13 @@ export default function Header () {
     return (
         <div className='header'>
             <div className='header-title' onClick={() => navigate('/')}>☕ Daily Grind</div>
-
             <nav>
                 <Link to="/">HOME</Link>
-                <Link to="/coffee">COFFEE</Link>
+               <Link to="/products">PRODUCTS</Link>
+                <Link to="/basket">BASKET</Link>
+                <Link to="/order">ORDER</Link>
+                <Link to="/reports">REPORTS</Link>
+                <Link to="/accounts">ACCOUNTS</Link>
             </nav>
 
             <div className='shopping-cart'>

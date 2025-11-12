@@ -1,5 +1,8 @@
+
+const SERVER_URL = import.meta.env.PROD ? import.meta.env.VITE_SERVER_URL : '';
+
 const getProducts = async function () {
-    const data = await fetch(`/api/product`, {
+    const data = await fetch(`${SERVER_URL}/api/product`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -15,7 +18,7 @@ const getProducts = async function () {
 };
 
 const getProductById = async function (id) {
-    const data = await fetch(`/api/product/${id}`, {
+    const data = await fetch(`${SERVER_URL}/api/product/${id}`, {
         method: 'GET',
         credentials: 'include',
         headers: {

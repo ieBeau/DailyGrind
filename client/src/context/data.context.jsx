@@ -1,8 +1,10 @@
-// CartContext.js
+// DataContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 // Context
 const DataContext = createContext();
+
+const SERVER_URL = import.meta.env.PROD ? import.meta.env.VITE_SERVER_URL : '';
 
 // Provider
 export const DataProvider = ({ children }) => {
@@ -25,7 +27,7 @@ export const DataProvider = ({ children }) => {
 };
 
 const getProducts = async () => {
-    const response =  await fetch('/api/product', {
+    const response =  await fetch(`${SERVER_URL}/api/product`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -39,6 +41,7 @@ const getProducts = async () => {
     })
     .catch(error => {
         console.error('Error:', error);
+        return [];
     });
 
     return response;

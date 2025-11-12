@@ -27,7 +27,7 @@ export default function ProductList({ search }) {
     if (search === "") {
       setFilter(products);
     } else {
-      const filteredProducts = products.filter(product => product.PRODUCTNAME.toLowerCase().includes(search.toLowerCase()));
+      const filteredProducts = products.filter(product => product.PRODUCTNAME?.toLowerCase().includes(search.toLowerCase()));
       setFilter(filteredProducts);
     }
   }, [search, products]);
@@ -52,7 +52,7 @@ export default function ProductList({ search }) {
 
   return (
     <div className="coffee-list-container">
-      {filter.map((product, index) =>  <ProductCard key={index} product={product} handleProduct={handleProduct} />)}
+      {filter.map(product =>  <ProductCard key={product.IDPRODUCT} product={product} handleProduct={handleProduct} />)}
     </div>
   );
 }

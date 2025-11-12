@@ -5,11 +5,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ command }) => {
 
-  let environment = 'development';
-
-  if (command === 'serve') environment = 'development';
-  else environment = 'production';
-
+  const environment = command === 'serve' ? 'development' : 'production';
+  
   return {
     plugins: [react()],
     preview: {
@@ -19,9 +16,13 @@ export default defineConfig(({ command }) => {
     },
     server: {
       proxy: {
-        '/api': environment === "development"
+        '/api': {
+          target: environment === "development"
           ? `http://localhost:3000`
-          : 'https://dailygrind-server.onrender.com'
+          : 'https://dailygrind-server.onrender.com',
+          changeOrigin: true,
+          secure: false
+        }
       }
     }
   }

@@ -1,0 +1,48 @@
+// CartContext.js
+import React, { createContext, useContext, useState, useEffect } from "react";
+
+// Context
+const DataContext = createContext();
+
+// Provider
+export const DataProvider = ({ children }) => {
+
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const productsData = await getProducts();
+            setProducts(productsData);
+        }
+        fetchData();
+    }, []);
+
+    return (
+        <DataContext.Provider value={{ products, setProducts }}>
+            {children}
+        </DataContext.Provider>
+    );
+};
+
+const getProducts = async () => {
+    const response =  await fetch('/api/product', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Products fetched!');
+        return data;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    return response;
+};
+
+// Custom hook for convenience
+export const useData = () => useContext(DataContext);

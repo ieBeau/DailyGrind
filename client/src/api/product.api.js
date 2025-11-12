@@ -1,10 +1,7 @@
-const API_BASE = import.meta.env.DEV
-  ? "http://localhost:3000"
-  : "https://dailygrind-server.onrender.com";
-
 const getProducts = async function () {
-    const data = await fetch(`${API_BASE}/api/products`, {
+    const data = await fetch(`/api/product`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
@@ -18,8 +15,9 @@ const getProducts = async function () {
 };
 
 const getProductById = async function (id) {
-    const data = await fetch(`${API_BASE}/api/products/${id}`, {
+    const data = await fetch(`/api/product/${id}`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }

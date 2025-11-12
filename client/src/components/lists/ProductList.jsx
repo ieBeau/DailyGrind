@@ -2,32 +2,35 @@ import '../../styles/components/lists/ProductList.css';
 
 import { useEffect, useState } from "react";
 
-// import { addToCart, viewCart } from '../../utils/shoppingCart';
 import { useCart } from '../../context/order.context';
-
-import product from "../../api/product.api";
+import { useData } from '../../context/data.context';
 
 import ProductCard from "../cards/ProductCard";
 
-export default function ProductList() {
-  const [products, setProducts] = useState([]);
+export default function ProductList({ search }) {
+  const { products, setProducts } = useData();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const data = await product.getProducts();
-        setProducts(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+  const [filter, setFilter] = useState([]);
 
-    fetchProducts();
-  }, []);
+  useEffect(() => {
+    if (products.length > 0) {
+      setFilter(products);
+      setLoading(false);
+      return;
+    }
+  }, [products]);
+
+  useEffect(() => {
+    if (search === "") {
+      setFilter(products);
+    } else {
+      const filteredProducts = products.filter(product => product.PRODUCTNAME.toLowerCase().includes(search.toLowerCase()));
+      setFilter(filteredProducts);
+    }
+  }, [search, products]);
 
   const { cart, addItem, removeItem, clearCart } = useCart();
 
@@ -39,8 +42,6 @@ export default function ProductList() {
       if (!data) throw new Error("Product not found");
 
       addItem(data);
-
-      console.log("Shopping Cart Updated:", cart);
     } catch (err) {
       setError(err.message);
     }
@@ -51,7 +52,7 @@ export default function ProductList() {
 
   return (
     <div className="coffee-list-container">
-      {products.map((product, index) =>  <ProductCard key={index} product={product} handleProduct={handleProduct} />)}
+      {filter.map((product, index) =>  <ProductCard key={index} product={product} handleProduct={handleProduct} />)}
     </div>
   );
 }

@@ -5,12 +5,11 @@ import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/layouts/Header";
 import Home from "./scenes/Home";
-import Coffee from "./scenes/Products";
-import Products from "./scenes/products";
-import Basket from "./scenes/basket";
-import Order from "./scenes/order";
-import Reports from "./scenes/reports";
-import Accounts from "./scenes/accounts";
+import Products from "./scenes/Products";
+import Basket from "./scenes/Basket";
+import Order from "./scenes/Order";
+import Reports from "./scenes/Reports";
+import Accounts from "./scenes/Accounts";
 
 function App() {
 

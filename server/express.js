@@ -5,7 +5,7 @@ import compress from "compression";
 import cors from "cors";
 import helmet from "helmet";
 
-import coffeeRoutes from './routes/coffee.route.js';
+import productRoutes from './routes/product.route.js';
 
 const app = express();
 
@@ -15,9 +15,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:5173', 
+        'https://dailygrind-coffee.onrender.com'
+    ],
+    credentials: true
+}));
 
 app.get("/", (req, res) => res.json({ message: "Welcome to Daily Grind." }));
-app.use('/api/coffees', coffeeRoutes);
+app.use('/api/product', productRoutes);
 
 export default app;

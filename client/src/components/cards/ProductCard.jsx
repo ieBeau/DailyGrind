@@ -1,15 +1,18 @@
 import "../../styles/components/cards/ProductCard.css";
 
-export default function ProductCard({ product, handleProduct }) {
+export default function ProductCard({ product, updateProduct, deleteProduct }) {
   return (
     <div className="product-card-container">
-      <p>
+      <p className="product-name">
         {product.PRODUCTNAME.charAt(0).toUpperCase() + product.PRODUCTNAME.slice(1).toLowerCase()} - {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(product.PRICE))}
       </p>
-
       <img src={product.PRODUCTIMAGE} alt={product.PRODUCTNAME} className="product-card-image" />
+      <div className="product-description">{product.DESCRIPTION || 'No description available.'}</div>
 
-      <button onClick={() => handleProduct(product.IDPRODUCT)}>Select</button>
+      <div className="buttons-group">
+        <button className="update-button" onClick={() => updateProduct(product.IDPRODUCT)}>Update</button>
+        <button className="delete-button" onClick={() => deleteProduct(product.IDPRODUCT)}>Delete</button>
+      </div>
     </div>
   );
 }

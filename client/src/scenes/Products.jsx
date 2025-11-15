@@ -27,13 +27,6 @@ export default function Product () {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <button className="primary-button margin-top-large" >
-                    Update Product Description
-                </button>
-                <button className="primary-button margin-top-large" >
-                    Add Product
-                </button>    
-
             
             <ProductList search={searchTerm} />
             

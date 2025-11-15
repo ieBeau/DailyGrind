@@ -1,18 +1,15 @@
 import '../../styles/components/lists/ProductList.css';
-
+import '../../styles/components/cards/ProductCard.css';
+import ProductCard from "../cards/ProductCard";
 import { useEffect, useState } from "react";
-
 import { useCart } from '../../context/order.context';
 import { useData } from '../../context/data.context';
 
-import ProductCard from "../cards/ProductCard";
-
 export default function ProductList({ search }) {
-  const { products, setProducts } = useData();
 
+  const { products, setProducts } = useData();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [filter, setFilter] = useState([]);
 
   useEffect(() => {
@@ -33,6 +30,9 @@ export default function ProductList({ search }) {
   }, [search, products]);
 
   const { cart, addItem, removeItem, clearCart } = useCart();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const openInfo = (product) => setSelectedProduct(product);
+  const closeInfo = () => setSelectedProduct(null);
 
   const handleProduct = (id) => {
     try {
@@ -52,7 +52,39 @@ export default function ProductList({ search }) {
 
   return (
     <div className="coffee-list-container">
-      {filter.map(product =>  <ProductCard key={product.IDPRODUCT} product={product} handleProduct={handleProduct} />)}
+      <table className="coffee-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {filter.map(product => (
+            <tr key={product.IDPRODUCT}>
+              <td>{product.IDPRODUCT}</td>
+              <td className="product-name">{product.PRODUCTNAME}</td>
+              <td className="product-price">{new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(Number(product.PRICE))}</td>
+              <td className="product-stock">{product.STOCK}</td>
+              <td>
+                <button className="more-info-button" onClick={() => openInfo(product)}>Info</button>
+                <button className="add-button" onClick={() => handleProduct(product.IDPRODUCT)}>Add</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {selectedProduct && (
+        <div className="modal-overlay" onClick={closeInfo}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeInfo} aria-label="Close">×</button>
+            <ProductCard product={selectedProduct} handleProduct={handleProduct} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import '../styles/scenes/Home.css';
+import Hero from '../components/layouts/Hero';
 
 export default function Home () {
 
     return (
         <div className='home'>
-            <h1>Home Page</h1>
+            <Hero />
         </div>
     )
 }

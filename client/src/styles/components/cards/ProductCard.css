@@ -4,6 +4,14 @@
   justify-content: flex-end;
   gap: 10px;
   margin-bottom: 10px;
+  background-color: #242424;
+  border: 4px solid #b87334;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.product-name {
+  color: #b87334;
 }
 
 .product-card-image {
@@ -11,4 +19,22 @@
   border-radius: 10px;
   min-width: 100px;
   min-height: 100px;
+}
+
+.update-button {
+  background: #b87334;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background: #8b0707;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
 }

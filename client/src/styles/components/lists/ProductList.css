@@ -1,11 +1,121 @@
-.product-list-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+.coffee-list-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
-@media (max-width: 750px) {
-  .product-list-container {
-    grid-template-columns: repeat(3, 1fr);
+.coffee-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.coffee-table th,
+.coffee-table td {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.coffee-table thead th {
+  background: #b87334;
+  font-weight: 700;
+}
+
+.product-name {
+  font-weight: 600;
+}
+.product-price {
+  white-space: nowrap;
+}
+
+.add-button {
+  background: #b87334;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .coffee-table {
+    min-width: 0;
+    font-size: 14px;
   }
+  .coffee-table thead {
+    display: none;
+  }
+  .coffee-table,
+  .coffee-table tbody,
+  .coffee-table tr,
+  .coffee-table td {
+    display: block;
+    width: 100%;
+  }
+  .coffee-table tr {
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+  }
+  .coffee-table td {
+    padding-left: 50%;
+    position: relative;
+  }
+  .coffee-table td::before {
+    position: absolute;
+    left: 16px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .coffee-table td:nth-of-type(1)::before {
+    content: "ID";
+  }
+  .coffee-table td:nth-of-type(2)::before {
+    content: "Product";
+  }
+  .coffee-table td:nth-of-type(3)::before {
+    content: "Description";
+  }
+  .coffee-table td:nth-of-type(4)::before {
+    content: "Price";
+  }
+  .coffee-table td:nth-of-type(5)::before {
+    content: "";
+  }
+}
+
+/* Card Overlay For Product Info */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: transparent;
+  padding: 0;
+  border-radius: 10px;
+  max-width: 700px;
+  width: 95%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.modal-content .product-card-container {
+  margin: 0;
+  border-radius: 6px 6px 0 0;
 }

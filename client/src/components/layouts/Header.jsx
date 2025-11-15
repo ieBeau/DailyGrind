@@ -15,7 +15,7 @@ export default function Header () {
     return (
         <div className='navbar'>
             <div className='header'>
-                <div className='nav-logo' onClick={() => navigate('/')}>The Daily Grind</div>
+                <Link to="/" className='nav-logo'>The Daily Grind</Link>
 
                 <div className='nav-container'>
                     <nav>

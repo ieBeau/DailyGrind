@@ -4,7 +4,7 @@ export default function ProductCard({ product, updateProduct, deleteProduct }) {
   return (
     <div className="product-card-container">
       <p className="product-name">
-        {product.PRODUCTNAME.charAt(0).toUpperCase() + product.PRODUCTNAME.slice(1).toLowerCase()} - {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(product.PRICE))}
+        {product.PRODUCTNAME.charAt(0).toUpperCase() + product.PRODUCTNAME.slice(1).toLowerCase()} - {new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(Number(product.PRICE))}
       </p>
       <img src={product.PRODUCTIMAGE} alt={product.PRODUCTNAME} className="product-card-image" />
       <div className="product-description">{product.DESCRIPTION || 'No description available.'}</div>

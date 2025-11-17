@@ -1,4 +1,3 @@
-import OracleDB from 'oracledb';
 import { getConnection } from '../database/oracleDB.js';
 
 const PRODUCTS = 'BB_PRODUCT';

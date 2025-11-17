@@ -1,7 +1,5 @@
 import { getConnection } from '../database/oracleDB.js';
 
-const SHIPPING = 'BB_BASKETSTATUS';
-
 // Task 4: Update Shipping Status
 export const updateShippingStatus = async (req, res) => {
     let connection;

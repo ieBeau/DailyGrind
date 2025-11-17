@@ -1,6 +1,6 @@
-import { getConnection } from '../database/oracleDB.js';
+import OracleDB from 'oracledb';
 
-const TAXES = 'BB_TAX';
+import { getConnection } from '../database/oracleDB.js';
 
 // Task 3: Get Tax Amount
 export const getTaxAmount = async (req, res) => {
@@ -8,15 +8,23 @@ export const getTaxAmount = async (req, res) => {
     try {
         connection = await getConnection();
 
-        const input = {
-            state: req.params.state.toUpperCase(),
-            subtotal: parseFloat(req.params.subtotal)
-        }
+        let purchase = {
+            state:  req.params.state.toUpperCase(),
+            subtotal: parseFloat(req.body.subtotal),
+            tax: 0,
+            total: 0
+        };
 
-        const taxes = parseFloat(await connection.execute(`SELECT * FROM ${TAXES} WHERE STATE = :state`, [input.state]).rows[0]);
+        const result = await connection.execute('BEGIN TAX_COST_SP(:in_shopper_state, :in_subtotal, :out_tax_amount); END;', {
+            in_shopper_state: purchase.state,                                   // Require: Task 3
+            in_subtotal:      purchase.subtotal,                                // Require: Task 3
+            out_tax_amount: { dir: OracleDB.BIND_OUT, type: OracleDB.NUMBER }   // Require: Task 3
+        });
         
-        const data = input.subtotal * taxes;
-        res.status(200).json(data);
+        purchase.tax = result.outBinds.out_tax_amount;
+        purchase.total = purchase.subtotal + purchase.tax;
+
+        res.status(200).json({ purchase });
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {

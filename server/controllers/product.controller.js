@@ -1,3 +1,4 @@
+import OracleDB from 'oracledb';
 import { getConnection } from '../database/oracleDB.js';
 
 const PRODUCTS = 'BB_PRODUCT';
@@ -54,21 +55,22 @@ export const createProduct = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
-        const newProduct = {
-            productname: req.body.productname,
-            description: req.body.description,
-            productimage: req.body.productimage,
-            price: req.body.price,
-            active: req.body.active
+
+        const product = { 
+            ...req.body,
+            price:  parseFloat(req.body.price),
+            active: parseInt(req.body.active)
         };
 
-        await connection.execute(
-            `INSERT INTO ${PRODUCTS} (productname, description, productimage, price, active)
-            VALUES (:productname, :description, :productimage, :price, :active)`, 
-            newProduct
-        );
+        await connection.execute('BEGIN PROD_ADD_SP(:in_product_name, :in_description, :in_product_image, :in_price, :in_active); END;', {
+            in_product_name:    product.product_name,  // Require: Task 2
+            in_description:     product.description,   // Require: Task 2
+            in_product_image:   product.product_image, // Require: Task 2
+            in_price:           product.price,         // Require: Task 2
+            in_active:          product.active         // Require: Task 2
+        });
 
-        res.status(201).json(newProduct);
+        res.status(201).json({ message: 'Product created successfully', product });
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {
@@ -82,54 +84,23 @@ export const createProduct = async (req, res) => {
     }
 };
 
-// Task 1: Update Product
+// Task 1: Update Product Description
 export const updateProduct = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
-        const updatedProduct = {
-            idproduct: req.body.idproduct,
-            productname: req.body.productname,
-            description: req.body.description,
-            productimage: req.body.productimage,
-            price: req.body.price,
-            salestart: req.body.salestart,
-            saleend: req.body.saleend,
-            saleprice: req.body.saleprice,
-            active: req.body.active,
-            featured: req.body.featured,
-            featurestart: req.body.featurestart,
-            featureend: req.body.featureend,
-            type: req.body.type,
-            iddepartment: req.body.iddepartment,
-            stock: req.body.stock,
-            ordered: req.body.ordered,
-            reorder: req.body.reorder
-        };
 
-        await connection.execute(
-            `UPDATE ${PRODUCTS} SET 
-                productname = :productname, 
-                description = :description, 
-                productimage = :productimage, 
-                price = :price, 
-                salestart = :salestart, 
-                saleend = :saleend, 
-                saleprice = :saleprice, 
-                active = :active, 
-                featured = :featured, 
-                featurestart = :featurestart, 
-                featureend = :featureend, 
-                type = :type, 
-                iddepartment = :iddepartment, 
-                stock = :stock, 
-                ordered = :ordered, 
-                reorder = :reorder 
-            WHERE idproduct = :idproduct`,
-            updatedProduct
-        );
+        const product = {
+            productid:   parseInt(req.params.id),
+            description: req.body.description
+        }
 
-        res.status(200).json(updatedProduct);
+       await connection.execute('BEGIN group_task_1(:in_productid, :in_description); END;', {
+            in_productid:   product.productid,     // Require: Task 1
+            in_description: product.description    // Require: Task 1
+        });
+
+        res.status(200).json({ message: 'Product updated successfully', product });
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {
@@ -174,6 +145,38 @@ export const deleteAllProducts = async (req, res) => {
         await connection.execute(`DELETE FROM ${PRODUCTS}`);
 
         res.status(200).json({ message: 'All products deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
+    }
+};
+
+// Task 6: Get Product Sale
+export const getProductSale = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        let product = {
+            productid: parseInt(req.params.id),
+            status: null
+        };
+
+        const result = await connection.execute('SELECT CK_SALE_SF(:p_date, :p_product_id) AS sale_status FROM dual', {
+            p_date:       req.body.date || Date.now(),    // Require: Task 6
+            p_product_id: product.productid               // Require: Task 6
+        });
+
+        product.status = result.rows[0].SALE_STATUS;
+
+        res.status(200).json({ product });
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {

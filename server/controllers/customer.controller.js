@@ -1,7 +1,5 @@
 import { getConnection } from '../database/oracleDB.js';
 
-const SHIPPING = 'BB_BASKETSTATUS';
-
 // Report 2: Get Customer Total Spending
 export const getCustomerTotalSpending = async (req, res) => {
     let connection;

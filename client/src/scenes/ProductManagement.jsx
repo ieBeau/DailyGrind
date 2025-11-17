@@ -1,6 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/scenes/DailyGrind.css';
 
+// Mock data for demo purposes
+const mockProducts = [
+    {
+        idProduct: 1,
+        productName: "Espresso Roast",
+        description: "Strong and bold espresso blend.",
+        price: 12.99,
+        stock: 100,
+        active: 1
+    },
+    {
+        idProduct: 2,
+        productName: "Columbian Supreme",
+        description: "Smooth and balanced medium roast.",
+        price: 14.50,
+        stock: 80,
+        active: 1
+    },
+    {
+        idProduct: 3,
+        productName: "French Vanilla",
+        description: "Sweet vanilla flavoured coffee.",
+        price: 13.75,
+        stock: 50,
+        active: 1
+    }
+];
+
 // Product Management Component
 const ProductManagement = () => {
     const [products, setProducts] = useState([]);
@@ -13,7 +41,7 @@ const ProductManagement = () => {
         image: '',
         price: '',
         stock: '',
-        status: 1
+        active: 1
     });
 
     // Fetch products on component mount
@@ -21,45 +49,54 @@ const ProductManagement = () => {
         fetchProducts();
     }, []);
 
-    // Function to fetch products from the server
+    // Fetch products from API
     const fetchProducts = async () => {
         try {
-            const response = await fetch('https://dailygrind-server.onrender.com/api/products');
+            const response = await fetch('https://dailygrind-server.onrender.com/api/product');
             const data = await response.json();
             setProducts(data);
         } catch (error) {
             console.error('Error fetching products:', error);
+            alert('Could not connect to backend. Using demo data.');  // Alert user about demo data usage
+            setProducts(mockProducts); 
         }
     };
 
-    // Function to handle updating product description
+    // Update Product Description
     const handleUpdateDescription = async () => {
         if (!selectedProduct || !newDescription) {
             alert('Please select a product and enter a new description.');
             return;
         }
-
-        // Send update request to the server
+        
         try { 
-            const response = await fetch('https://dailygrind-server.onrender.com/api/update-product-description', {
-                method: 'POST',
+            const currentProduct = products.find(p => p.idProduct == selectedProduct);
+
+
+            const response = await fetch(`https://dailygrind-server.onrender.com/api/product/${selectedProduct}`, {
+                method: 'PUT',
                 headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                productId: selectedProduct,
-                description: newDescription
-            })
-        });
+                    'Content-Type': 'application/json',
+                },
+                    body: JSON.stringify({
+                        idProduct: parseInt(selectedProduct),
+                        productName: currentProduct.productName,
+                        description: newDescription,
+                        productImage: currentProduct.image || 'default.jpg',
+                        price: currentProduct.price,
+                        stock: currentProduct.stock || 0,
+                        active: currentProduct.active
+                    })
+                });
             
             // Handle response
             if (response.ok) {
                 alert('Product description updated successfully!');
                 setNewDescription('');
                 setSelectedProduct('');
-                fetchProducts();  // Refresh product list
+                fetchProducts();
             } else {
-                alert('Error updating product description.');
+                alert('Error updating product description.');   
             }
         } catch (error) {
             console.error('Error: ', error);
@@ -67,15 +104,27 @@ const ProductManagement = () => {
         }
     };
 
-    // Function to handle adding a new product
+    // Add New Product
     const handleAddProduct = async () => {
+        if (!newProduct.productName || !newProduct.description || !newProduct.price) {
+            alert('Please fill in product name, description, and price.');
+            return;
+        }   
+
         try {
-            const response = await fetch('https://dailygrind-server.onrender.com/api/add-product', {
+            const response = await fetch('https://dailygrind-server.onrender.com/api/product', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newProduct)
+                body: JSON.stringify({
+                    productName: newProduct.productName,
+                    description: newProduct.description,
+                    productImage: newProduct.image || 'default.jpg',
+                    price: parseFloat(newProduct.price),
+                    stock: parseInt(newProduct.stock) || 0,
+                    active: parseInt(newProduct.active)
+                })
             });
 
             // Handle response
@@ -87,8 +136,9 @@ const ProductManagement = () => {
                     image: '',
                     price: '',
                     stock: '',
-                    status: 1
+                    active: 1
                 });
+
                 fetchProducts();  // Refresh product list
             } else {
                 alert('Error adding product.');
@@ -106,7 +156,7 @@ const ProductManagement = () => {
     );
 
     return (
-    <div className="page-containter"> {/* Outer Page Container */}
+    <div className="page-container"> {/* Outer Page Container */}
         <div className="content-wrapper"> {/* Inner Content Wrapper */}
             <h1 className="heading-secondary center-text margin-bottom-large">Product Management</h1>
 
@@ -120,11 +170,10 @@ const ProductManagement = () => {
                         <label className="form-label">Select Product:</label>
                         <select className="form-select"
                             value={selectedProduct}
-                            onChange={(e) => setSelectedProduct(e.target.value)}
-                            >
+                            onChange={(e) => setSelectedProduct(e.target.value)}>
                             <option value="">-- Select a product --</option>
                             {products.map((product) => (
-                                <option key={product.productId} value={product.productId}>
+                                <option key={product.idProduct} value={product.idProduct}>
                                     {product.productName}
                                 </option>
                             ))}
@@ -204,11 +253,10 @@ const ProductManagement = () => {
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Status:</label>
+                        <label className="form-label">Active:</label>
                         <select className="form-select"
-                            value={newProduct.status}
-                            onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })}
-                        >
+                            value={newProduct.active}
+                            onChange={(e) => setNewProduct({ ...newProduct, active: e.target.value })}>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
@@ -241,7 +289,7 @@ const ProductManagement = () => {
                                 <th>Description</th>
                                 <th>Price</th>
                                 <th>Stock</th>
-                                <th>Status</th>
+                                <th>Active</th>
                             </tr>
                         </thead>  
                         <tbody>
@@ -256,15 +304,15 @@ const ProductManagement = () => {
                                 </tr>   
                             ) : (
                                 filteredProducts.map((product) => (
-                                    <tr key={product.idProduct || product.productId}>
-                                        <td>{product.idProduct || product.productId}</td>
+                                    <tr key={product.idProduct}>
+                                        <td>{product.idProduct}</td>
                                         <td className="product-name">{product.productName}</td>
                                         <td className="product-description">{product.description}</td>
-                                    <td className="product-price">${product.price}</td>
-                                    <td className="product-stock">{product.stock}</td>
+                                        <td className="product-price">${product.price}</td>
+                                        <td className="product-stock">{product.stock}</td>
                                     <td>
-                                        <span className={product.status ===1 ? 'status-active' : 'status-inactive'}>
-                                        {product.status === 1 ? 'Active' : 'Inactive'}
+                                        <span className={product.active ===1 ? 'status-active' : 'status-inactive'}>
+                                        {product.active === 1 ? 'Active' : 'Inactive'}
                                         </span>
                                     </td>
                                 </tr>

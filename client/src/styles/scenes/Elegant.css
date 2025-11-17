@@ -122,6 +122,11 @@
 
 /* Forms */
 
+.form-group {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .form-label {
   display: block;
   font-family: "Lato", sans-serif;
@@ -141,6 +146,8 @@
   font-family: "Lato", sans-serif;
   font-size: 1rem;
   transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .form-input:focus {
@@ -158,10 +165,13 @@
   color: #ffffff;
   font-family: "Lato", sans-serif;
   font-size: 1rem;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .form-textarea {
   width: 100%;
+  max-width: 100%;
   padding: 12px 16px;
   border: 2px solid #3d3d3d;
   border-radius: 8px;
@@ -171,13 +181,10 @@
   font-size: 1rem;
   resize: vertical;
   min-height: 80px;
+  box-sizing: border-box;
 }
 
-/* Full width form items */
-
-.full-width {
-  grid-column: 1 / -1;
-}
+/* Full width items */
 
 /* Cards */
 
@@ -236,49 +243,6 @@
 .danger-button:hover {
   background-color: #b91c1c;
   transform: translateY(-2px);
-}
-
-/* Forms */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.label {
-  display: block;
-  font-family: "Lato", sans-serif;
-  font-weight: 600;
-  color: #f5f5f5;
-  margin-bottom: 8px;
-  font-size: 1rem;
-}
-
-.input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #3d3d3d;
-  border-radius: 8px;
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: "Lato", sans-serif;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #b87334;
-  box-shadow: 0 0 0 3px rgba(184, 115, 52, 0.1);
-}
-
-.select {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #3d3d3d;
-  border-radius: 8px;
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: "Lato", sans-serif;
-  font-size: 1rem;
 }
 
 /* Navigation */

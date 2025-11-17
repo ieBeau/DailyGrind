@@ -21,6 +21,7 @@ export default function Header () {
                     <nav>
                         <Link to="/">HOME</Link>
                         <Link to="/products">PRODUCTS</Link>
+                        <Link to="/product-management">MANAGE PRODUCTS</Link>
                         <Link to="/basket">BASKET</Link>
                         <Link to="/order">ORDER</Link>
                         <Link to="/reports">REPORTS</Link>

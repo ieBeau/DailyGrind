@@ -52,7 +52,7 @@ const ProductManagement = () => {
     // Fetch products from API
     const fetchProducts = async () => {
         try {
-            const response = await fetch('https://dailygrind-server.onrender.com/api/products');
+            const response = await fetch('https://dailygrind-server.onrender.com/api/product');
             const data = await response.json();
             setProducts(data);
         } catch (error) {
@@ -73,7 +73,7 @@ const ProductManagement = () => {
             const currentProduct = products.find(p => p.idProduct == selectedProduct);
 
 
-            const response = await fetch(`https://dailygrind-server.onrender.com/api/products/${selectedProduct}`, {
+            const response = await fetch(`https://dailygrind-server.onrender.com/api/product/${selectedProduct}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const ProductManagement = () => {
         }   
 
         try {
-            const response = await fetch('https://dailygrind-server.onrender.com/api/products', {
+            const response = await fetch('https://dailygrind-server.onrender.com/api/product', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

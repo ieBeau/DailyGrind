@@ -34,14 +34,11 @@ export default function ProductList({ search }) {
   const openInfo = (product) => setSelectedProduct(product);
   const closeInfo = () => setSelectedProduct(null);
 
-  const handleProduct = (id) => {
+  const handleProduct = (product) => {
     try {
-      // Find product by id
-      const data = products.find(c => c.IDPRODUCT === id);
+      if (!product) throw new Error("Product not found");
 
-      if (!data) throw new Error("Product not found");
-
-      addItem(data);
+      addItem(product);
     } catch (err) {
       setError(err.message);
     }
@@ -71,7 +68,7 @@ export default function ProductList({ search }) {
               <td className="product-stock">{product.STOCK}</td>
               <td>
                 <button className="more-info-button" onClick={() => openInfo(product)}>Info</button>
-                <button className="add-button" onClick={() => handleProduct(product.IDPRODUCT)}>Add</button>
+                <button className="add-button" onClick={() => handleProduct(product)}>Add</button>
               </td>
             </tr>
           ))}

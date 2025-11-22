@@ -1,5 +1,5 @@
 import '../styles/scenes/Home.css';
-import Hero from '../components/layouts/Hero';
+import Hero from '../components/cards/Hero';
 
 export default function Home () {
 

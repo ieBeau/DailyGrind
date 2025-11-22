@@ -1,0 +1,19 @@
+CREATE OR REPLACE FUNCTION TOT_PURCH_SF (
+    p_shopper_id IN BB_BASKET.IDSHOPPER%TYPE
+)
+RETURN NUMBER
+AS
+    v_total NUMBER := 0;
+BEGIN
+    IF p_shopper_id IS NULL THEN
+        RETURN NULL;
+    END IF;
+    
+    SELECT SUM(TOTAL)
+    INTO v_total
+    FROM BB_BASKET
+    WHERE IDSHOPPER = p_shopper_id
+      AND ORDERPLACED = 1;
+
+    RETURN v_total;
+END TOT_PURCH_SF;

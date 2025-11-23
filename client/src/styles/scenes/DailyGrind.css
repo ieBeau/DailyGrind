@@ -26,6 +26,21 @@
   margin: 0;
 }
 
+html {
+  background-color: #0a0a0a;
+  background-image: 
+    radial-gradient(circle at 25% 25%, #b87334 0.5px, transparent 0.5px),
+    radial-gradient(circle at 75% 75%, #b87334 0.5px, transparent 0.5px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  min-height: 100%;
+}
+
+body {
+  background: transparent;
+  min-height: 100vh;
+}
+
 .body {
   font-family: "Lato", sans-serif;
   font-size: 1rem;

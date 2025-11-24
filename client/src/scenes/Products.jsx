@@ -1,7 +1,6 @@
 import '../styles/scenes/Products.css';
 import { useCart } from '../context/order.context';
 import { useState, useEffect } from 'react';
-import Header from '../components/layouts/Header.jsx';
 
 export default function Product() {
   const { cart, addItem, removeItem } = useCart();

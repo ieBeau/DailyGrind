@@ -1,0 +1,16 @@
+.list {
+    background-color: rgb(56, 56, 56);
+    border-radius: 10px;
+    padding: 5px;
+    max-height: 70vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    align-items: start;
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+    grid-auto-rows: minmax(40px, auto);
+    text-align: center;
+}

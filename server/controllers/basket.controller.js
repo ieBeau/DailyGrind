@@ -1,7 +1,51 @@
 import OracleDB from 'oracledb';
 import { getConnection } from '../database/oracleDB.js';
 
-const BASKETS = 'BB_BASKET';
+export const getBaskets = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const result = await connection.execute(`SELECT * FROM BB_BASKET`);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
+    }
+};
+
+export const getBasketItems = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const result = await connection.execute(`
+            SELECT * FROM BB_BASKETITEM BI
+            LEFT JOIN BB_PRODUCT P
+            ON BI.IDPRODUCT = P.IDPRODUCT 
+            WHERE IDBASKET = :idbasket
+        `, {
+            idbasket: req.params.idbasket
+        });
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
+    }
+};
 
 // Task 5: Add Basket Item
 export const addBasketItem = async (req, res) => {
@@ -11,7 +55,7 @@ export const addBasketItem = async (req, res) => {
 
         const basket_item = {
             productid: parseInt(req.body.productid),
-            basketid:  parseInt(req.body.basketid),
+            basketid:  parseInt(req.params.idbasket),
             price:     parseFloat(req.body.price),
             quantity:  parseInt(req.body.quantity),
             sizecode:  parseInt(req.body.sizecode),
@@ -47,19 +91,45 @@ export const checkBasketItemsInStock = async (req, res) => {
     try {
         connection = await getConnection();
 
-        let basket = {
-            basketid: parseInt(req.body.basketid),
-            status: null
-        }
-
         const result = await connection.execute('BEGIN REPORT_1(:p_basketid, :p_basket_status); END;', {
-            p_basketid: basket.basketid,                                        // Require: Report 1
+            p_basketid: parseInt(req.params.idbasket),                          // Require: Report 1
             p_basket_status: { dir: OracleDB.BIND_OUT, type: OracleDB.STRING, } // Require: Report 1
         });
 
-        basket.status = result.outBinds.p_basket_status;
+        res.status(200).json(result.outBinds.p_basket_status);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
+    }
+};
 
-        res.status(200).json({ basket });
+// Task 4: Update Shipping Status
+export const updateBasketShippingStatus = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        const basket_status = {
+            ...req.body,
+            basketid: parseInt(req.params.idbasket),
+            date:     new Date(req.body.date)
+        }
+
+        await connection.execute('BEGIN STATUS_SHIP_SP(:in_basketid, :in_date, :in_shipper, :in_shipnum); END;', {
+            in_basketid: basket_status.basketid, // Require: Task 4
+            in_date:     basket_status.date,     // Require: Task 4
+            in_shipper:  basket_status.shipper,  // Require: Task 4
+            in_shipnum:  basket_status.shipnum   // Require: Task 4
+        });
+        
+        res.status(200).json({ message: "Shipping status updated successfully!", basket_status });
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {

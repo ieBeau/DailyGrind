@@ -1,0 +1,117 @@
+.basket-item-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: #242424;
+  border: 4px solid #b87334;
+  border-radius: 6px;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.basket-item-card:hover {
+  background-color: #323232;
+}
+
+.basket-item-card p {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+.basket-item-card .basket-item-header {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.basket-item-card p {
+    margin: 0;
+}
+
+.basket-item-card .basket-item-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.basket-item-id {
+    opacity: 0.4;
+}
+
+.basket-item-name {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.basket-item-image {
+    width: 75px;
+    height: 75px;
+}
+
+.basket-item-description {
+    flex: 1;
+    min-width: 0;
+    /* align-self: center; */
+    text-align: left;
+    
+}
+
+.basket-item-quantity-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.basket-item-quantity {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 0;
+    font-size: large;
+}
+
+.basket-item-table-header {
+  text-align: center;
+  opacity: 0.4;
+}
+
+.basket-item-total {
+    text-align: right;
+}
+
+.basket-item-total-value {
+    text-align: right;
+}
+
+.basket-item-body table {
+  width: 175px;
+}
+
+/* if the input has the class directly (e.g. <input class="basket-item-quantity" type="number">) */
+input.basket-item-quantity[type="number"]::-webkit-outer-spin-button,
+input.basket-item-quantity[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input.basket-item-quantity[type="number"] {
+  cursor: pointer;
+}
+
+/* IE / Edge */
+input.basket-item-quantity[type="number"]::-ms-clear,
+input.basket-item-quantity[type="number"]::-ms-expand {
+  display: none;
+}

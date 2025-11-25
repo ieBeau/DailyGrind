@@ -6,7 +6,7 @@ import { useData } from "../../../context/data.context";
 
 export default function BasketItemCard({ basket, item }) {
 
-    const { baskets, setBaskets, handleBaskets } = useData();
+    const { baskets, handleBaskets } = useData();
     const { setShoppingCart } = useBasket();
 
     const [initializing, setInitializing] = useState(true);

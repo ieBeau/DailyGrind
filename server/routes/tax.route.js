@@ -5,6 +5,6 @@ import {
 
 const router = express.Router();
 
-router.get('/:state', getTaxAmount);
+router.post('/:state', getTaxAmount);
 
 export default router;

@@ -1,12 +1,12 @@
 import './Header.css';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import BasketQuantitySize from '../../misc/BasketQuantitySize/BasketQuantitySize.jsx';
 
 export default function Header () {
     
-    const navigate = useNavigate();
+    
     
     return (
         <div className='navbar'>

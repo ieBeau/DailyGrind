@@ -83,4 +83,4 @@ export const getBasketItemStatus = async (basket) => {
     .catch(error => { throw new Error("Network error: " + error.message) });
 
     return response;
-}
+};

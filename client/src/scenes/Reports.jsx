@@ -1,39 +1,71 @@
 import '../styles/scenes/Reports.css';
 
-import { useCustomer } from '../context/customer.context';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import reportApi from '../api/report.api';
 
 export default function Reports () {
 
-    const { customer, getCustomer } = useCustomer();
-
     const [customerId, setCustomerId] = useState('');
+    const [basketId, setBasketId] = useState('');
+    const [basketStatus, setBasketStatus] = useState(null);
+    const [totalPurchases, setTotalPurchases] = useState(null);
+    const [error, setError] = useState(null);
 
-    const fetchCustomerData = async () => {
-        const data = await getCustomer(customerId);
-    }
+
+    const fetchBasketStatus = async () => {
+        setError(null);
+        setBasketStatus(null);
+        try {
+            const data = await reportApi.getBasketStatus(basketId);
+            setBasketStatus(data.status);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch basket status');
+        }
+    };
+
+    const fetchTotalPurchases = async () => {
+        setError(null);
+        setTotalPurchases(null);
+        try {
+            const data = await reportApi.getTotalPurchases(customerId);
+            setTotalPurchases(data.total);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch total purchases');
+        }
+    };
     
     return (
         <div className='reports'>
             <h1>Reports Page</h1>
+            <section>
+                <h2>Basket Status</h2>
+                <input
+                    type="text"
+                    placeholder="Basket ID"
+                    value={basketId}
+                    onChange={(e) => setBasketId(e.target.value)}
+                />
+                <button onClick={fetchBasketStatus}>Check Status</button>
+                {basketStatus && <p>Status: {basketStatus}</p>}
+            </section>
 
-            <input type="text" placeholder="Customer ID" value={customerId} onChange={(e) => setCustomerId(e.target.value)} />
-            <button onClick={() => fetchCustomerData()}>Fetch Customer Data</button>
+            <section>
+                <h2>Total Purchases</h2>
+                <input
+                    type="text"
+                    placeholder="Customer ID"
+                    value={customerId}
+                    onChange={(e) => setCustomerId(e.target.value)}
+                />
+                <button onClick={fetchTotalPurchases}>Customer Total</button>
+                    {totalPurchases !== null ? (
+                        <p>Total Purchases: {totalPurchases}</p>
+                    ) : (
+                        <p>No Customer Total Found</p>
+                    )}
+            </section>
 
-            {customer ? (
-                <div>
-                    <h2>Customer Details (Customer ID: 21 - 27)</h2>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
-                        {
-                            Object.entries(customer).map(([key, value]) => (
-                                <p key={key}>{key}: {value}</p>
-                            ))
-                        }
-                    </div>
-                </div>
-            ) : (
-                <p>No customer data available.</p>
-            )}
+            {error && <p className="error">{error}</p>}
         </div>
-    )
+    );
 }

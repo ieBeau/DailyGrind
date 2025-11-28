@@ -1,16 +1,16 @@
-import './styles/main/App.css'
-import './styles/scenes/DailyGrind.css'
+import './App.css'
+import './styles/DailyGrind.css'
 
 import { Routes, Route } from "react-router-dom";
 
-import Header from "./components/layouts/Header";
-import Home from "./scenes/Home";
-import Products from "./scenes/Products";
-import ProductManagement from "./scenes/ProductManagement";
-import Basket from "./scenes/Basket";
-import Order from "./scenes/Order";
-import Reports from "./scenes/Reports";
-import Accounts from "./scenes/Accounts";
+import Header from "./components/layouts/Header/Header.jsx";
+import Home from "./scenes/Home/Home.jsx";
+import Products from "./scenes/Products/Products.jsx";
+import ProductManagement from "./scenes/ProductManagement/ProductManagement.jsx";
+import Basket from "./scenes/Basket/Basket.jsx";
+import Orders from "./scenes/Orders/Orders.jsx";
+import Reports from "./scenes/Reports/Reports.jsx";
+import Accounts from "./scenes/Accounts/Accounts.jsx";
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/product-management" element={<ProductManagement />} />
         <Route path="/basket" element={<Basket />} />
-        <Route path="/order" element={<Order />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/accounts" element={<Accounts />} />
       </Routes>

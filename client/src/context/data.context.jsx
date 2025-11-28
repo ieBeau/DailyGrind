@@ -1,50 +1,66 @@
 // DataContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+import { getShopperById, getShoppers, getShopperSpending } from "../api/shopper.api";
+import { getProducts } from "../api/product.api";
+import { getBasketItems, getBasketItemStatus, getBaskets } from "../api/basket.api";
+
 // Context
 const DataContext = createContext();
-
-const SERVER_URL = import.meta.env.PROD ? import.meta.env.VITE_SERVER_URL : '';
 
 // Provider
 export const DataProvider = ({ children }) => {
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [shoppers, setShoppers] = useState([]);
     const [products, setProducts] = useState([]);
+    const [baskets, setBaskets] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
+            const shoppersData = await getShoppers();
             const productsData = await getProducts();
+            const basketsData = await getBaskets();
+
+            // Report 2: Shopper Spending
+            const shopperAdditions = await Promise.all(
+                shoppersData.map(async (shopper) => {
+                    const spending = await getShopperSpending({ id: shopper.IDSHOPPER });
+                    return { 
+                        ...shopper,
+                        fullname: `${shopper.FIRSTNAME} ${shopper.LASTNAME}`,
+                        spending
+                    }
+                })
+            );
+
+            handleBaskets(basketsData);
+            
+            setShoppers(shopperAdditions);
             setProducts(productsData);
+            setIsLoading(false);
         }
         fetchData();
     }, []);
 
+    const handleBaskets = async (data) => {
+        // Report 1: Basket Status
+        const basketAdditions = await Promise.all(
+            data.map(async (basket) => {
+                const items = await getBasketItems(basket.IDBASKET);
+                const quantity = items.reduce((sum, item) => sum + item.QUANTITY, 0);
+                const status = await getBasketItemStatus(basket);
+                return { ...basket, ITEMS: items, QUANTITY: quantity, STATUS: status };
+            })
+        );
+        setBaskets(basketAdditions);
+    };
+
     return (
-        <DataContext.Provider value={{ products, setProducts }}>
+        <DataContext.Provider value={{ isLoading, products, setProducts, shoppers, setShoppers, baskets, setBaskets, handleBaskets }}>
             {children}
         </DataContext.Provider>
     );
-};
-
-const getProducts = async () => {
-    const response =  await fetch(`${SERVER_URL}/api/product`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Products fetched!');
-        return data;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        return [];
-    });
-
-    return response;
 };
 
 // Custom hook for convenience

@@ -1,0 +1,55 @@
+.checkout-background {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+}
+
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    gap: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(11, 11, 11);
+    border: 1px solid rgb(255, 212, 121);
+    padding: 25px;
+    z-index: 20;
+    border-radius: 15px;
+    width: 30vw;
+    min-width: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100,100,100,0.6) transparent;
+}
+
+.checkout-container-label {
+    text-align: left;
+}
+
+.checkout-label {
+    text-align: left;
+    opacity: 0.5;
+}
+
+.checkout-value {
+    text-align: right;
+}
+
+.checkout-line-container {
+    padding: 0;
+}
+
+.checkout-line {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 8px 0;
+    opacity: 0.5;
+}

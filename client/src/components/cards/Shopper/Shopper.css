@@ -1,0 +1,40 @@
+.shopper-container {
+    background-color: rgb(39, 39, 39);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    cursor: pointer;
+    text-align: start;
+    transition: background-color 0.3s ease;
+}
+
+.shopper-container.selected {
+    box-shadow: inset 0 0 0 2px #4CAF50;
+}
+
+.shopper-container:hover {
+    background-color: rgb(59, 59, 59);
+}
+
+.shopper-header {
+    display: flex;
+    flex-direction: row;
+    /* font-size: 1.5em; */
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.shopper-header p {
+    margin: 0;
+}
+
+.id {
+    opacity: 0.4;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.2em;
+}

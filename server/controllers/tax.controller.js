@@ -8,6 +8,7 @@ export const getTaxAmount = async (req, res) => {
     try {
         connection = await getConnection();
 
+
         let purchase = {
             state:  req.params.state.toUpperCase(),
             subtotal: parseFloat(req.body.subtotal),
@@ -24,7 +25,7 @@ export const getTaxAmount = async (req, res) => {
         purchase.tax = result.outBinds.out_tax_amount;
         purchase.total = purchase.subtotal + purchase.tax;
 
-        res.status(200).json({ purchase });
+        res.status(200).json(purchase);
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {

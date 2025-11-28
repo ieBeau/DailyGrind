@@ -5,10 +5,9 @@ import compress from "compression";
 import cors from "cors";
 import helmet from "helmet";
 
-import customerRoutes from './routes/customer.route.js';
+import shopperRoutes from './routes/shopper.route.js';
 import productRoutes from './routes/product.route.js';
 import basketRoutes from './routes/basket.route.js';
-import shippingRoutes from './routes/shipping.route.js';
 import taxRoutes from './routes/tax.route.js';
 import reportRoutes from './routes/report.route.js';
 
@@ -29,10 +28,9 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => res.json({ message: "Welcome to Daily Grind." }));
-app.use('/api/customer', customerRoutes);
+app.use('/api/shopper', shopperRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/basket', basketRoutes);
-app.use('/api/shipping', shippingRoutes);
 app.use('/api/tax', taxRoutes);
 app.use('/api/report', reportRoutes);
 

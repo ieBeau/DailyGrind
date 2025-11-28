@@ -9,7 +9,7 @@ CREATE OR REPLACE PROCEDURE BASKET_ADD_SP (
 AS
 BEGIN
     UPDATE BB_BASKETITEM
-    SET quantity = quantity + p_quantity
+    SET quantity = p_quantity
     WHERE idproduct = p_productid
       AND idbasket  = p_basketid;
 

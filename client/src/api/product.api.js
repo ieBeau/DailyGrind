@@ -1,36 +1,35 @@
+import { fetchApi } from "../utils/fetch";
 
-const SERVER_URL = import.meta.env.PROD ? import.meta.env.VITE_SERVER_URL : '';
-
-const getProducts = async function () {
-    const data = await fetch(`${SERVER_URL}/api/product`, {
+export const getProducts = async () => {
+    const response =  await fetchApi(`/product`, {
         method: 'GET',
         credentials: 'include',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
     })
-    .then(response => response)
-    .catch(error => { throw new Error("Network error: " + error.message) });
+    .then(response => response.json())
+    .then(data => data)
+    .catch(error => {
+        console.error('Error:', error);
+        return [];
+    });
 
-    if (!data.ok) throw new Error("Failed to fetch products");
-
-    return data.json();
+    return response;
 };
 
-const getProductById = async function (id) {
-    const data = await fetch(`${SERVER_URL}/api/product/${id}`, {
+export const getProductById = async function (id) {
+    const data = await fetchApi(`/product/${id}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response)
+    .then(response => response.json())
     .catch(error => { throw new Error("Network error: " + error.message) });
 
     if (!data.ok) throw new Error("Failed to fetch coffee");
 
-    return data.json();
+    return data;
 };
-
-export default { getProducts, getProductById };

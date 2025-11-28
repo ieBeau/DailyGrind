@@ -61,7 +61,7 @@ export default function Reports () {
                 <h2>Total Purchases Report</h2>
                     <input
                         type="text"
-                        placeholder="Customer ID"
+                        placeholder="Shopper ID"
                         value={customerId}
                         onChange={(e) => setCustomerId(e.target.value)}
                     />

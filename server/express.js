@@ -9,6 +9,7 @@ import shopperRoutes from './routes/shopper.route.js';
 import productRoutes from './routes/product.route.js';
 import basketRoutes from './routes/basket.route.js';
 import taxRoutes from './routes/tax.route.js';
+import reportRoutes from './routes/report.route.js';
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.use('/api/shopper', shopperRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/basket', basketRoutes);
 app.use('/api/tax', taxRoutes);
+app.use('/api/report', reportRoutes);
 
 export default app;

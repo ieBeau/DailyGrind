@@ -1,0 +1,105 @@
+.reports {
+  background-color: #0a0a0a;
+  min-height: 100vh;
+  padding: 20px 0;
+  border: 2px solid #b87334;
+  border-radius: 12px; 
+  margin: 10px; 
+}
+
+.reports h1 {
+  font-family: "Dancing Script", cursive;
+  color: #b87334;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reports h2 {
+  font-family: "Dancing Script", cursive;
+  color: #b87334;
+  font-size: 2rem;
+  margin: 2rem 0 1rem 0;
+  border-bottom: 2px solid #b87334;
+  padding-bottom: 10px;
+}
+
+
+.reports table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #0a0a0a;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1rem 0;
+  border: 1px solid #3d3d3d;
+}
+
+.reports th {
+  background-color: #b87334;
+  color: #ffffff;
+  padding: 16px;
+  text-align: left;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+}
+
+.reports td {
+  padding: 16px;
+  border-bottom: 1px solid #3d3d3d;
+  font-family: "Lato", sans-serif;
+  color: #f5f5f5;
+}
+
+.reports section {
+  background-color: #0a0a0a;
+  border: 1px solid #3d3d3d;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.reports input {
+  width: 200px;
+  padding: 12px 16px;
+  border: 2px solid #3d3d3d;
+  border-radius: 8px;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  margin-right: 1rem;
+  font-family: "Lato", sans-serif;
+}
+
+.reports button {
+  background-color: #b87334;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+}
+
+.reports button:hover {
+  background-color: #d2691e;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.wide-card {
+  max-width: 1400px;
+}
+
+.card {
+  background-color: #0a0a0a;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  border: 1px solid #3d3d3d;
+}

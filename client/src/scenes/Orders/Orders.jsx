@@ -38,8 +38,12 @@ export default function Orders () {
     };
 
     return (
-        <div className="order">
-        <h1>Order Page</h1>
+
+        <div className='order'>
+            <div className="content-wrapper">
+                <h1>Order Page</h1>
+                {/* Future order content will go here */}
+            </div>
         </div>
     );
 }

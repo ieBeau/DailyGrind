@@ -91,7 +91,15 @@ export default function BasketItemCard({ basket, item }) {
                         </tr>
                         <tr>
                             <td><input className="basket-item-quantity" type="number" min="0" max="99" value={quantity} onChange={handleChange} /></td>
-                            <td className="basket-item-total-value">${(item.PRICE * quantity).toFixed(2)}</td>
+                            <td className="basket-item-total-value">${(item.PRICE * quantity).toFixed(2)}</td> 
+                        </tr>
+                        <tr>
+                            <td>                            
+                                <div className="basket-quick-actions">
+                                    <button className="add-btn">ADD</button>
+                                    <button className="remove-btn">REMOVE</button>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

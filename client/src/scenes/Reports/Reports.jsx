@@ -25,22 +25,24 @@ export default function Reports () {
 
     return (
         <div className='reports'>
-            <h1>Reports Page</h1>
+            <div className="content-wrapper">
+                <div className="card wide-card">
+                    <h1>Reports Page</h1>
+                        <h2>Basket Status Report</h2>
 
-            { isLoading ? <p>Loading Data...</p> : 
-                <>
-                    <h2>Basket Status Report</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Basket ID</th>
-                                <th>Shopper</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
+                        { isLoading ? <p>Loading Data...</p> : 
+                    <>                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Basket ID</th>
+                                    <th>Shopper</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
                                 baskets.map((basket) => {
                                     const shopper = shoppers.find(s => s.IDSHOPPER === basket.IDSHOPPER);
                                     return (
@@ -52,26 +54,29 @@ export default function Reports () {
                                         </tr>
                                     )
                                 })
-                            }
-                        </tbody>
-                    </table>
-                </>
-            }
-            <section>
-                <h2>Total Purchases Report</h2>
-                    <input
-                        type="text"
-                        placeholder="Shopper ID"
-                        value={customerId}
-                        onChange={(e) => setCustomerId(e.target.value)}
-                    />
-                <button onClick={fetchTotalPurchases}>Customer Total</button>
-                    {totalPurchases !== null ? (
-                        <p>Total Purchases: {totalPurchases}</p>
-                    ) : (
-                        <p>No Customer Total Found</p>
-                    )}
-            </section>
+                                }
+                            </tbody>
+                        </table>
+                    </>                
+                }
+                <section>
+                    <h2>Total Purchases Report</h2>
+                        <input
+                            type="text"
+                            placeholder="Shopper ID"
+                            value={customerId}
+                            onChange={(e) => setCustomerId(e.target.value)}
+                        />
+                    <button onClick={fetchTotalPurchases}>Customer Total</button>
+                        {totalPurchases !== null ? (
+                            <p>Total Purchases: {totalPurchases}</p>
+                        ) : (
+                            <p>No Customer Total Found</p>
+                        )}
+                </section>
+            </div>
         </div>
+
+    </div>
     )
 }

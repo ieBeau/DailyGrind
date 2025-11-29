@@ -366,7 +366,7 @@ const handleAddProduct = async () => {
                         </select>
                     </div>
                 </div>
-                    <button className="primary-button margin-top-large"onClick={handleAddProduct}>
+                    <button className="primary-button margin-top-large" onClick={handleAddProduct}>
                         Add Product
                     </button>                
                 </div>                

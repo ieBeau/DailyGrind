@@ -30,7 +30,7 @@ const handleUpdateDescription = async () => {
     }
     
     try { 
-        const currentProduct = products.find(p => p.IDPRODUCT == selectedProduct);
+        const currentProduct = products.find(p => p.IDPRODUCT === Number(selectedProduct));
         const response = await fetch(`https://dailygrind-server.onrender.com/api/product/${selectedProduct}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},

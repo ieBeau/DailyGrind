@@ -1,7 +1,5 @@
 import './Accounts.css';
-
 import { useData } from '../../context/data.context';
-
 import ShopperCard from '../../components/cards/Shopper/Shopper.jsx';
 
 export default function Accounts () {

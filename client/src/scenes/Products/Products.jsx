@@ -1,15 +1,10 @@
 import './Products.css';
-
-// import { useBasket } from '../../context/basket.context';
 import { useState, useEffect } from 'react';
 
 export default function Products () {
-//   const { shoppingCart } = useBasket();
-
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [cartQuantities, setCartQuantities] = useState({});
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -17,8 +12,7 @@ export default function Products () {
 
   const handleQuantityChange = (productId, newQuantity) => {
     const currentQty = cartQuantities[productId] || 0;
-    newQuantity = Math.max(0, newQuantity); 
-    
+    newQuantity = Math.max(0, newQuantity);     
     
     setCartQuantities(prev => ({
         ...prev,
@@ -52,7 +46,7 @@ export default function Products () {
 //   const total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 //   const quantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Fetch products from API
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -86,104 +80,98 @@ export default function Products () {
 
   if (loading) return <div className="loading">Loading products...</div>;
 
-  return (
+   return (
     <div className="products-page">
-        <div className="page-container">
-                <div className="content-wrapper">
-                    <div className="card margin-bottom-large wide-card">
-                        <div className="card-header flex-space-between">
-                            <h2 className="heading-secondary">Products List</h2>                
-                            <div className="search-container">
-                            <input 
-                                className="form-input search-input"
-                                type="text"
-                                placeholder="Search products..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                        {showNoResultsPopup && (
-                            <div className="popup-overlay">
-                                <div className="popup-message">
-                                <h3>No Products Found</h3>
-                                <p>No products match your search for "{searchTerm}"</p>
-                                <button 
-                                    className="primary-button" 
-                                    onClick={() => {
-                                        setShowNoResultsPopup(false);
-                                        setSearchTerm("");                                    
-                                }}
-                                >
-                                    OK
-                                </button>
-                            </div>
-                        </div>
-                        )}
-                    </div>
-
-                    {/* Admin actions */}
-                    <div className="card margin-bottom-large wide-card admin-actions">
-                        <div className="card-header">
-                            <h3 className="heading-tertiary">Admin Actions</h3>
-                        </div>
-                            <div className="flex-layout gap-16 admin-buttons">
-                                <button className="primary-button admin-btn" onClick={() => setShowUpdateModal(true)}>
-                                    Update Product Description                    
-                                </button>
-                                <button className="primary-button" onClick={() => setShowAddModal(true)}>
-                                    Add New Product                    
-                                </button>   
-                            </div>
-                        </div> 
-
-                    {/* Product Table */}
-                    <div className="card wide-card">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th style={{textAlign: 'center'}}>Product ID</th>
-                                <th style={{textAlign: 'center'}}>Product Name</th>
-                                <th style={{textAlign: 'center'}}>Description</th>
-                                <th style={{textAlign: 'center'}}>Price</th>
-                                <th style={{textAlign: 'center'}}>Quantity</th>
-                            </tr>
-                        </thead>  
-                        <tbody>
-                            {filteredProducts.map((product) => (
-                                <tr key={product.IDPRODUCT}>
-                                    <td>{product.IDPRODUCT}</td>
-                                    <td className="product-name">{product.PRODUCTNAME}</td>
-                                    <td className="product-description">{product.DESCRIPTION}</td>
-                                    <td className="product-price">${product.PRICE}</td>
-                                    <td>
-                                        <div className="quantity-controls">
-                                        <button
-                                            className="add-btn"
-                                            onClick={() => handleQuantityChange(product.IDPRODUCT, (cartQuantities[product.IDPRODUCT] || 0) + 1)}
-                                            >
-                                                ADD
-                                        </button>
-
-                                            <span className="quantity-display">
-                                                {cartQuantities[product.IDPRODUCT] || 0}
-                                            </span>
-
-                                            <button 
-                                                className="remove-btn"
-                                                onClick={() => handleQuantityChange(product.IDPRODUCT, Math.max(0, (cartQuantities[product.IDPRODUCT] || 0) - 1))}
-                                            >
-                                                REMOVE  
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+      <div className="content-wrapper">
+        <div className="card margin-bottom-large wide-card">
+          <div className="card-header flex-space-between">
+            <h2 className="heading-secondary">Products List</h2>                
+            <div className="search-container">
+              <input 
+                className="form-input search-input"
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
+            {showNoResultsPopup && (
+              <div className="popup-overlay">
+                <div className="popup-message">
+                  <h3>No Products Found</h3>
+                  <p>No products match your search for "{searchTerm}"</p>
+                  <button 
+                    className="primary-button" 
+                    onClick={() => {
+                      setShowNoResultsPopup(false);
+                      setSearchTerm("");                                    
+                    }}
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="card margin-bottom-large wide-card admin-actions">
+            <div className="card-header">
+              <h3 className="heading-tertiary">Admin Actions</h3>
+            </div>
+            <div className="flex-layout gap-16 admin-buttons">
+              <button className="primary-button admin-btn" onClick={() => setShowUpdateModal(true)}>
+                Update Product Description                    
+              </button>
+              <button className="primary-button" onClick={() => setShowAddModal(true)}>
+                Add New Product                    
+              </button>   
+            </div>
+          </div> 
+
+          <div className="card wide-card">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th style={{textAlign: 'center'}}>Product ID</th>
+                  <th style={{textAlign: 'center'}}>Product Name</th>
+                  <th style={{textAlign: 'center'}}>Description</th>
+                  <th style={{textAlign: 'center'}}>Price</th>
+                  <th style={{textAlign: 'center'}}>Quantity</th>
+                </tr>
+              </thead>  
+              <tbody>
+                {filteredProducts.map((product) => (
+                  <tr key={product.IDPRODUCT}>
+                    <td>{product.IDPRODUCT}</td>
+                    <td className="product-name">{product.PRODUCTNAME}</td>
+                    <td className="product-description">{product.DESCRIPTION}</td>
+                    <td className="product-price">${product.PRICE}</td>
+                    <td>
+                      <div className="quantity-controls">
+                        <button
+                          className="add-btn"
+                          onClick={() => handleQuantityChange(product.IDPRODUCT, (cartQuantities[product.IDPRODUCT] || 0) + 1)}
+                        >
+                          ADD
+                        </button>
+                        <span className="quantity-display">
+                          {cartQuantities[product.IDPRODUCT] || 0}
+                        </span>
+                        <button 
+                          className="remove-btn"
+                          onClick={() => handleQuantityChange(product.IDPRODUCT, Math.max(0, (cartQuantities[product.IDPRODUCT] || 0) - 1))}
+                        >
+                          REMOVE  
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

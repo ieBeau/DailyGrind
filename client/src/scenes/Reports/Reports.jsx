@@ -28,6 +28,7 @@ export default function Reports () {
             <div className="content-wrapper">
                 <div className="card wide-card">
                     <h1>Reports Page</h1>
+                        <section>
                         <h2>Basket Status Report</h2>
 
                         { isLoading ? <p>Loading Data...</p> : 
@@ -59,6 +60,7 @@ export default function Reports () {
                         </table>
                     </>                
                 }
+                </section>
                 <section>
                     <h2>Total Purchases Report</h2>
                         <input

@@ -53,7 +53,7 @@ export default function UserLogin() {
         signOut();
         setShopper(null);
         setStatusMessage({ type: null, text: "" });
-    }
+    };
 
     const handleCancel = () => {
         setLoginForm(false);

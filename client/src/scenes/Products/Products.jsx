@@ -230,7 +230,7 @@ const handleAddProduct = async () => {
                     <td>{product.IDPRODUCT}</td>
                     <td className="product-name">{product.PRODUCTNAME}</td>
                     <td className="product-description">{product.DESCRIPTION}</td>
-                    <td className="product-price">${product.PRICE}</td>                    
+                    <td className="product-price">${product.PRICE.toFixed(2)}</td>                    
                     <td>
                       <div className="quantity-controls">
                         <button

@@ -143,8 +143,8 @@ const AdminSchema = { findByUsername, findById, save, updateLastLogin };
 
 
 const getMethods = {
-    authenticate: function(password) {
-        return bcrypt.compare(password, this.PASSWORD_HASH);
+    authenticate: async function(password) {
+        return await bcrypt.compare(password, this.PASSWORD_HASH);
     },
     updateLastLogin: async function() {
         return await AdminSchema.updateLastLogin(this.ADMIN_ID);

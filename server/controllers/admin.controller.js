@@ -8,11 +8,11 @@ const COOKIE = 't';
 export const createAccount = async (req, res) => {
     try {
         const { email, username, password } = req.body || {};
-        if (!email || !username || !password) return res.status(400).json({ message: 'Email, username, and password required' });
+        if (!email || !username || !password) return res.status(400).json({ success: false, message: 'Email, username, and password required' });
 
         const admin = await AdminSchema.save(email, username, password);
 
-        if (!admin.success) return res.status(401).json({ message: admin.message });
+        if (!admin.success) return res.status(401).json({ success: false, message: admin.message });
 
         const user = admin.user;
 
@@ -21,19 +21,19 @@ export const createAccount = async (req, res) => {
             user
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
 export const signIn = async (req, res) => {
     try {
         const { username, password } = req.body || {};
-        if (!username || !password) return res.status(400).json({ message: 'Username and password required' });
+        if (!username || !password) return res.status(400).json({ success: false, message: 'Username and password required' });
 
         const admin = await AdminSchema.findByUsername(username);
 
-        if (!admin) return res.status(401).json({ message: 'User not found' });
-        if (!admin.authenticate(password)) return res.status(401).json({ message: 'Invalid credentials' });
+        if (!admin) return res.status(401).json({ success: false, message: 'User not found' });
+        if (!await admin.authenticate(password)) return res.status(401).json({ success: false, message: 'Invalid credentials' });
         
         try { await admin.updateLastLogin(); } catch (e) { console.error('Failed to update last_login', e); }
 
@@ -49,6 +49,7 @@ export const signIn = async (req, res) => {
         res.cookie(COOKIE, token, cookieOptions);
 
         res.status(200).json({
+            success: true, 
             message: "Signed in successfully",
             token,
             admin
@@ -61,22 +62,22 @@ export const signIn = async (req, res) => {
 export const signOut = async (req, res) => {
     try {
         res.clearCookie(COOKIE);
-        res.status(200).json({ message: 'Signed out' });
+        res.status(200).json({ success: true, message: 'Signed out' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
 export const validate = async (req, res) => {
     try {
         const adminId = req.cookies && req.cookies[cookieName];
-        if (!adminId) return res.status(401).json({ message: 'Not authenticated' });
+        if (!adminId) return res.status(401).json({ success: false, message: 'Not authenticated' });
 
         const admin = await AdminSchema.findById(adminId);
-        if (!admin) return res.status(401).json({ message: 'Invalid session' });
+        if (!admin) return res.status(401).json({ success: false, message: 'Invalid session' });
 
-        res.status(200).json(admin);
+        res.status(200).json({ success: true, admin });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };

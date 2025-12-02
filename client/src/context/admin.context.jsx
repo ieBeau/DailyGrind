@@ -9,19 +9,22 @@ const AdminContext = createContext();
 export const AdminProvider = ({ children }) => {
 
     const [admin, setAdmin] = useState(null);
+    const [user, setUser] = useState(null);
     
     const signIn = async (userData) => {
         const data = await login(userData);
         setAdmin(data.admin);
+        return data;
     };
 
     const signOut = () => {
         logout();
         setAdmin(null);
+        setUser(null);
     }
 
     return (
-        <AdminContext.Provider value={{ admin, signIn, signOut }}>
+        <AdminContext.Provider value={{ admin, user, setUser, signIn, signOut }}>
             {children}
         </AdminContext.Provider>
     );

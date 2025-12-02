@@ -30,7 +30,6 @@ export const createProduct = async (product) => {
     .then(response => response)
     .catch(error => { throw new Error("Network error: " + error.message) });    
 
-    console.log(data);
     if (!data.ok) throw new Error("Failed to create product");
 
     return data.json();
@@ -82,7 +81,7 @@ export const deleteProductById = async function (idproduct) {
     })
     .then(response => response)
     .catch(error => { throw new Error("Network error: " + error.message) });
-    
+
     if (!data.ok) throw new Error("Failed to delete product");
 
     return data.json();

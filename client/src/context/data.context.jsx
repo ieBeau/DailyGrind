@@ -45,8 +45,13 @@ export const DataProvider = ({ children }) => {
     }, []);
 
     const refreshProducts = async () => {
-        const productsData = await getProducts();
-        setProducts(productsData);
+        try {
+            const productsData = await getProducts();
+            setProducts(productsData);
+        } catch (error) {
+            console.error("Failed to refresh products:", error);
+            // Optionally, setProducts([]); or handle error state here
+        }
     }
 
     const handleBaskets = async (data) => {

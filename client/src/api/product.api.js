@@ -63,11 +63,11 @@ export const updateProductDescription = async function (id, description) {
         },
         body: JSON.stringify({ description })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) throw new Error("Failed to update product");
+        return response.json();
+    })
     .catch(error => { throw new Error("Network error: " + error.message) });
-
-    if (!data.ok) throw new Error("Failed to update product");
-
     return data;
 }
 

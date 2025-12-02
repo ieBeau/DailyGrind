@@ -70,7 +70,7 @@ export const signOut = async (req, res) => {
 
 export const validate = async (req, res) => {
     try {
-        const adminId = req.cookies && req.cookies[cookieName];
+        const adminId = req.cookies && req.cookies[COOKIE];
         if (!adminId) return res.status(401).json({ success: false, message: 'Not authenticated' });
 
         const admin = await AdminSchema.findById(adminId);

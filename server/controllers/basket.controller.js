@@ -11,7 +11,7 @@ export const getBaskets = async (req, res) => {
             ON B.IDBASKET = BS.IDBASKET
             AND BS.IDSTATUS = (
                SELECT MAX(IDSTATUS) FROM BB_BASKETSTATUS WHERE IDBASKET = B.IDBASKET
-             )
+            )
         `);
         res.status(200).json(result.rows);
     } catch (error) {

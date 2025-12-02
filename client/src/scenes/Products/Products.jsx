@@ -3,114 +3,72 @@ import { useState, useEffect } from 'react';
 import { updateBasketItem } from '../../api/basket.api';
 import { useBasket } from '../../context/basket.context'; 
 import { useAdmin } from '../../context/admin.context';
+import { useData } from '../../context/data.context';
+import { createProduct, deleteProductById, updateProductDescription } from '../../api/product.api';
 
 export default function Products () {
 
   const { admin } = useAdmin();
+  const { isLoading, products, setProducts, refreshProducts } = useData();
+  const { shoppingCart } = useBasket();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [cartQuantities, setCartQuantities] = useState({});
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showNoResultsPopup, setShowNoResultsPopup] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [newDescription, setNewDescription] = useState('');
-  const [newProduct, setNewProduct] = useState({
-    productName: '',
-    description: '',
-    image: '',
-    price: '',
-    stock: '',
-    active: 1
-});
+  const defaultProduct = {
+    PRODUCTNAME: '',
+    DESCRIPTION: '',
+    PRODUCTIMAGE: '',
+    PRICE: '',
+    STOCK: '',
+    ACTIVE: 1
+  }
+  const [newProduct, setNewProduct] = useState(defaultProduct);
 
-// Update Product Description
-const handleUpdateDescription = async () => {
+  // Task 1: Update Product Description
+  const handleUpdateDescription = async () => {
     if (!selectedProduct || !newDescription) {
         alert('Please select a product and enter a new description.');
         return;
     }
+
+    await updateProductDescription(selectedProduct.IDPRODUCT, newDescription)
+    .then(() => {
+        setProducts(prevProducts => prevProducts.map(prod => 
+            prod.IDPRODUCT === selectedProduct.IDPRODUCT
+                ? { ...prod, DESCRIPTION: newDescription }
+                : prod
+        ));
+        setNewDescription('');
+        setSelectedProduct(null);
+        setShowUpdateModal(false)
+    })
+    .catch((error) => {
+        console.error('Error updating product description: ', error);
+    });
     
-    try { 
-        const currentProduct = products.find(p => p.IDPRODUCT === Number(selectedProduct));
-        const response = await fetch(`https://dailygrind-server.onrender.com/api/product/${selectedProduct}`, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                idProduct: parseInt(selectedProduct),
-                productName: currentProduct.PRODUCTNAME,
-                description: newDescription,
-                productImage: currentProduct.IMAGE || 'default.jpg',
-                price: currentProduct.PRICE,
-                stock: currentProduct.STOCK || 0,
-                active: currentProduct.ACTIVE
-            })
-        });
-        
-        if (response.ok) {
-            alert('Product description updated successfully!');
-            setNewDescription('');
-            setSelectedProduct('');
-            setShowUpdateModal(false);
-            const response = await fetch('https://dailygrind-server.onrender.com/api/product');
-            const data = await response.json();
-            setProducts(data);
-        } else {
-            alert('Error updating product description.');   
-        }
-    } catch (error) {
-        console.error('Error: ', error);
-        alert('Error updating product description.');
-    }
-};
+  };
 
-// Add New Product
-const handleAddProduct = async () => {
-    if (!newProduct.productName || !newProduct.description || !newProduct.price) {
-        alert('Please fill in product name, description, and price.');
-        return;
-    }   
+  // Task 2: Create New Product
+  const handleAddProduct = async (e) => {
+      if (!newProduct.PRODUCTNAME || !newProduct.DESCRIPTION || !newProduct.PRICE) {
+          alert('Please fill in product name, description, and price.');
+          return;
+      }
 
-    try {
-        const response = await fetch('https://dailygrind-server.onrender.com/api/product', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                productName: newProduct.productName,
-                description: newProduct.description,
-                productImage: newProduct.image || 'default.jpg',
-                price: parseFloat(newProduct.price),
-                stock: parseInt(newProduct.stock) || 0,
-                active: parseInt(newProduct.active)
-            })
-        });
-
-        if (response.ok) {
-            alert('Product added successfully!');
-            setNewProduct({
-                productName: '',
-                description: '',
-                image: '',
-                price: '',
-                stock: '',
-                active: 1
-            });
-            setShowAddModal(false);
-            const response = await fetch('https://dailygrind-server.onrender.com/api/product');
-            const data = await response.json();
-            setProducts(data);
-        } else {
-            alert('Error adding product.');
-        }
-    } catch (error) {
-        console.error('Error: ', error);
-        alert('Error adding product.'); 
-    }
-};
-
-  const { shoppingCart } = useBasket();
+      await createProduct(newProduct)
+      .then(() => {
+          refreshProducts();
+          setNewProduct(defaultProduct);
+          setShowAddModal(false);
+      })
+      .catch((error) => {
+          console.error('Error adding product: ', error);
+      });
+  };
 
   const handleQuantityChange = async (productId, newQuantity) => {
     const currentQty = cartQuantities[productId] || 0;
@@ -123,42 +81,25 @@ const handleAddProduct = async () => {
 
     // Update basket via API
     const product = products.find(p => p.IDPRODUCT === productId);
-    if (product && shoppingCart.basket) {
-        await updateBasketItem(shoppingCart.basket, product, newQuantity);
-    }
+    if (product && shoppingCart.basket) await updateBasketItem(shoppingCart.basket, product, newQuantity);
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('https://dailygrind-server.onrender.com/api/product');
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
+  const handleDeleteProduct = async (productId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+    if (!confirmDelete) return;
+
+    await deleteProductById(productId)
+    .then(() => {
+        refreshProducts();
+    });
+  };
 
   const filteredProducts = products.filter(product =>
     product.PRODUCTNAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.DESCRIPTION?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    if (searchTerm && filteredProducts.length === 0) {
-        setShowNoResultsPopup(true);
-        const timer = setTimeout(() => setShowNoResultsPopup(false), 3000);
-        return () => clearTimeout(timer);
-    } else {
-        setShowNoResultsPopup(false);
-    }
-  }, [searchTerm, filteredProducts]);
-
-  if (loading) return <div className="loading">Loading products...</div>;
+  if (isLoading) return <div className="loading">Loading products...</div>;
 
   return (
     <div className="products-page">
@@ -169,29 +110,12 @@ const handleAddProduct = async () => {
             <div className="search-container">
               <input 
                 className="form-input search-input"
-                type="text"
+                type="search"
                 placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            {showNoResultsPopup && (
-              <div className="popup-overlay">
-                <div className="popup-message">
-                  <h3>No Products Found</h3>
-                  <p>No products match your search for "{searchTerm}"</p>
-                  <button 
-                    className="primary-button" 
-                    onClick={() => {
-                      setShowNoResultsPopup(false);
-                      setSearchTerm("");                                    
-                    }}
-                  >
-                    OK
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
 
           {
@@ -222,6 +146,7 @@ const handleAddProduct = async () => {
                   <th style={{textAlign: 'center'}}>Description</th>
                   <th style={{textAlign: 'center'}}>Price</th>
                   <th style={{textAlign: 'center'}}>Quantity</th>
+                  { admin && ( <th style={{textAlign: 'center'}}>Actions</th> )}
                 </tr>
               </thead>  
               <tbody>
@@ -230,7 +155,7 @@ const handleAddProduct = async () => {
                     <td>{product.IDPRODUCT}</td>
                     <td className="product-name">{product.PRODUCTNAME}</td>
                     <td className="product-description">{product.DESCRIPTION}</td>
-                    <td className="product-price">${product.PRICE}</td>                    
+                    <td className="product-price">${product.PRICE.toFixed(2)}</td>                    
                     <td>
                       <div className="quantity-controls">
                         <button
@@ -256,6 +181,19 @@ const handleAddProduct = async () => {
                         </button>
                       </div>
                     </td>
+                    { admin && (
+                      <td>
+                        <button
+                          className="primary-button admin-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteProduct(product.IDPRODUCT);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -274,8 +212,8 @@ const handleAddProduct = async () => {
                     <div className="form-group">
                         <label className="form-label">Select Product:</label>
                         <select className="form-select"
-                            value={selectedProduct}
-                            onChange={(e) => setSelectedProduct(e.target.value)}>
+                            value={selectedProduct.IDPRODUCT || ""}
+                            onChange={(e) => setSelectedProduct(products.find(p => p.IDPRODUCT === Number(e.target.value)))}>
                             <option value="">-- Select a product --</option>
                             {products.map((product) => (
                                 <option key={product.IDPRODUCT} value={product.IDPRODUCT}>
@@ -289,7 +227,7 @@ const handleAddProduct = async () => {
                         <div className="current-description-box">
                             {
                               selectedProduct
-                                ? products.find(p => p.IDPRODUCT === Number(selectedProduct))?.DESCRIPTION
+                                ? products.find(p => p.IDPRODUCT === selectedProduct.IDPRODUCT)?.DESCRIPTION
                                 : 'Please select a product to see its current description.'
                             }
                         </div>
@@ -298,8 +236,8 @@ const handleAddProduct = async () => {
                         <label className="form-label">New Product Description:</label>
                         <textarea className="form-textarea"
                             rows="3"
-                            value={newProduct.description}
-                            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                            value={newDescription}
+                            onChange={(e) => setNewDescription(e.target.value)}
                             placeholder="Enter product description"
                         />
                     </div>
@@ -308,7 +246,7 @@ const handleAddProduct = async () => {
                   Update Description
                 </button>
             </div>
-            <button className="primary-button margin-top-large" onClick={() => setShowUpdateModal(false)}>Save & Close</button>
+            <button className="primary-button margin-top-large" onClick={() => setShowUpdateModal(false)}>Close</button>
           </div>
         </div>
       )}
@@ -326,8 +264,8 @@ const handleAddProduct = async () => {
                         <label className="form-label">Product Name:</label>
                         <input className="form-input"
                             type="text"
-                            value={newProduct.productName}
-                            onChange={(e) => setNewProduct({ ...newProduct, productName: e.target.value })}
+                            value={newProduct.PRODUCTNAME}
+                            onChange={(e) => setNewProduct({ ...newProduct, PRODUCTNAME: e.target.value })}
                             placeholder="Enter product name"
                         />
                     </div>
@@ -336,8 +274,8 @@ const handleAddProduct = async () => {
                         <label className="form-label">Description:</label>
                         <textarea className="form-textarea"
                             rows="3"
-                            value={newProduct.description}
-                            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                            value={newProduct.DESCRIPTION}
+                            onChange={(e) => setNewProduct({ ...newProduct, DESCRIPTION: e.target.value })}
                             placeholder="Enter product description"
                         />
                     </div>
@@ -346,8 +284,8 @@ const handleAddProduct = async () => {
                         <label className="form-label">Image Filename:</label>
                         <input className="form-input"
                             type="text"
-                            value={newProduct.image}
-                            onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+                            value={newProduct.PRODUCTIMAGE}
+                            onChange={(e) => setNewProduct({ ...newProduct, PRODUCTIMAGE: e.target.value })}
                             placeholder="Enter image filename"
                         />
                     </div>
@@ -357,8 +295,8 @@ const handleAddProduct = async () => {
                         <input className="form-input"
                             type="number"
                             step="0.01"
-                            value={newProduct.price}
-                            onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+                            value={newProduct.PRICE}
+                            onChange={(e) => setNewProduct({ ...newProduct, PRICE: e.target.value })}
                             placeholder="Enter product price"
                         />
                     </div>
@@ -367,8 +305,8 @@ const handleAddProduct = async () => {
                         <label className="form-label">Stock Quantity:</label>
                         <input className="form-input"
                             type="number"
-                            value={newProduct.stock}
-                            onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
+                            value={newProduct.STOCK}
+                            onChange={(e) => setNewProduct({ ...newProduct, STOCK: e.target.value })}
                             placeholder="Enter product stock"                            
                         />
                     </div>
@@ -376,8 +314,8 @@ const handleAddProduct = async () => {
                     <div className="form-group">  
                         <label className="form-label">Active:</label>
                         <select className="form-select"
-                            value={newProduct.active}
-                            onChange={(e) => setNewProduct({ ...newProduct, active: e.target.value })}>
+                            value={newProduct.ACTIVE}
+                            onChange={(e) => setNewProduct({ ...newProduct, ACTIVE: e.target.value })}>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
@@ -387,7 +325,7 @@ const handleAddProduct = async () => {
                         Add Product
                     </button>                
                 </div>                
-            <button className="primary-button margin-top-large" onClick={() => setShowAddModal(false)}>Save & Close</button>
+            <button className="primary-button margin-top-large" onClick={() => setShowAddModal(false)}>Close</button>
           </div>
         </div>
       )}

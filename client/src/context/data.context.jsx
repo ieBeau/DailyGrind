@@ -43,6 +43,16 @@ export const DataProvider = ({ children }) => {
         fetchData();
     }, []);
 
+    const refreshProducts = async () => {
+        try {
+            const productsData = await getProducts();
+            setProducts(productsData);
+        } catch (error) {
+            console.error("Failed to refresh products:", error);
+            // Optionally, setProducts([]); or handle error state here
+        }
+    }
+
     const handleBaskets = async (data) => {
         // Report 1: Basket Status
         const basketAdditions = await Promise.all(
@@ -57,7 +67,7 @@ export const DataProvider = ({ children }) => {
     };
 
     return (
-        <DataContext.Provider value={{ isLoading, products, setProducts, shoppers, setShoppers, baskets, setBaskets, handleBaskets }}>
+        <DataContext.Provider value={{ isLoading, products, setProducts, refreshProducts, shoppers, setShoppers, baskets, setBaskets, handleBaskets }}>
             {children}
         </DataContext.Provider>
     );

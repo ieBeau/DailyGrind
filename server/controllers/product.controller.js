@@ -57,17 +57,17 @@ export const createProduct = async (req, res) => {
 
         const product = { 
             ...req.body,
-            price:  parseFloat(req.body.price),
-            active: parseInt(req.body.active)
+            PRICE:  parseFloat(req.body.PRICE),
+            ACTIVE: parseInt(req.body.ACTIVE)
         };
 
         await connection.execute('BEGIN PROD_ADD_SP(:in_product_name, :in_description, :in_product_image, :in_price, :in_active); END;', {
-            in_product_name:    product.product_name,  // Require: Task 2
-            in_description:     product.description,   // Require: Task 2
-            in_product_image:   product.product_image, // Require: Task 2
-            in_price:           product.price,         // Require: Task 2
-            in_active:          product.active         // Require: Task 2
-        });
+            in_product_name:    product.PRODUCTNAME,    // Require: Task 2
+            in_description:     product.DESCRIPTION,    // Require: Task 2
+            in_product_image:   product.PRODUCTIMAGE,   // Require: Task 2
+            in_price:           product.PRICE,          // Require: Task 2
+            in_active:          product.ACTIVE          // Require: Task 2
+        }, { autoCommit: true });
 
         res.status(201).json({ message: 'Product created successfully', product });
     } catch (error) {
@@ -97,7 +97,7 @@ export const updateProduct = async (req, res) => {
        await connection.execute('BEGIN group_task_1(:in_productid, :in_description); END;', {
             in_productid:   product.productid,     // Require: Task 1
             in_description: product.description    // Require: Task 1
-        });
+        }, { autoCommit: true });
 
         res.status(200).json({ message: 'Product updated successfully', product });
     } catch (error) {
@@ -118,7 +118,11 @@ export const deleteProduct = async (req, res) => {
     try {
         connection = await getConnection();
 
-        const deletedProduct = await connection.execute(`DELETE FROM ${PRODUCTS} WHERE idproduct = :idproduct`, [req.params.idproduct]);
+        const deletedProduct = await connection.execute(`
+            DELETE FROM ${PRODUCTS} WHERE idproduct = :idproduct`, 
+            { idproduct: req.params.id }, 
+            { autoCommit: true }
+        );
 
         if (!deletedProduct) return res.status(404).json({ message: 'Product not found' });
 
@@ -141,7 +145,7 @@ export const deleteAllProducts = async (req, res) => {
     try {
         connection = await getConnection();
 
-        await connection.execute(`DELETE FROM ${PRODUCTS}`);
+        await connection.execute(`DELETE FROM ${PRODUCTS}`, [], { autoCommit: true });
 
         res.status(200).json({ message: 'All products deleted successfully' });
     } catch (error) {

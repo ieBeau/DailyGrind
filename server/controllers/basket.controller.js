@@ -20,6 +20,32 @@ export const getBaskets = async (req, res) => {
     }
 };
 
+export const createBasket = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        const result = await connection.execute(`
+            INSERT INTO BB_BASKET DEFAULT VALUES RETURNING IDBASKET INTO :idbasket`, 
+            {
+                idbasket: { dir: OracleDB.BIND_OUT, type: OracleDB.NUMBER }
+            }, { autoCommit: true }
+        );
+
+        res.status(201).json({ message: "Basket created successfully!", idbasket: result.outBinds.idbasket[0] });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
+    }
+};
+
 export const getBasketItems = async (req, res) => {
     let connection;
     try {
@@ -69,7 +95,7 @@ export const addBasketItem = async (req, res) => {
             p_quantity:  basket_item.quantity,  // Require: Task 5
             p_sizecode:  basket_item.sizecode,  // Require: Task 5
             p_formcode:  basket_item.formcode   // Require: Task 5
-        });
+        }, { autoCommit: true });
 
         res.status(200).json({ message: "Basket item added successfully!", basket_item });
     } catch (error) {
@@ -127,9 +153,37 @@ export const updateBasketShippingStatus = async (req, res) => {
             in_date:     basket_status.date,     // Require: Task 4
             in_shipper:  basket_status.shipper,  // Require: Task 4
             in_shipnum:  basket_status.shipnum   // Require: Task 4
-        });
+        }, { autoCommit: true });
         
         res.status(200).json({ message: "Shipping status updated successfully!", basket_status });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    } finally {
+        if (connection) {
+            try {
+                await connection.close();
+            } catch (err) {
+                console.error('Error closing connection:', err);
+            }
+        }
+    }
+};
+
+export const deleteBasketItem = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        await connection.execute(`
+            DELETE FROM BB_BASKETITEM 
+            WHERE IDBASKET = :idbasket AND IDBASKETITEM = :idbasketitem`, 
+            { 
+                idbasket: parseInt(req.params.idbasket), 
+                idbasketitem: parseInt(req.params.idbasketitem) 
+            }, { autoCommit: true }
+        );
+
+        res.status(200).json({ message: "Basket item deleted successfully!" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {

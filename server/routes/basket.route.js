@@ -17,6 +17,6 @@ router.get('/:idbasket', getBasketItems);
 router.get('/:idbasket/status', checkBasketItemsInStock)
 router.post('/:idbasket', addBasketItem);
 router.put('/:idbasket/shipping', updateBasketShippingStatus);
-router.put('/:idbasket/:idbasketitem', deleteBasketItem);
+router.put('/:idbasket/item/:idbasketitem', deleteBasketItem);
 
 export default router;

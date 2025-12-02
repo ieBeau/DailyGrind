@@ -5,7 +5,14 @@ export const getBaskets = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
-        const result = await connection.execute(`SELECT * FROM BB_BASKET`);
+        const result = await connection.execute(`
+            SELECT B.*, BS.* FROM BB_BASKET B
+            LEFT JOIN BB_BASKETSTATUS BS
+            ON B.IDBASKET = BS.IDBASKET
+            AND BS.IDSTATUS = (
+               SELECT MAX(IDSTATUS) FROM BB_BASKETSTATUS WHERE IDBASKET = B.IDBASKET
+             )
+        `);
         res.status(200).json(result.rows);
     } catch (error) {
         res.status(500).json({ message: error.message });

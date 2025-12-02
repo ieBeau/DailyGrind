@@ -195,7 +195,7 @@ const handleAddProduct = async () => {
           </div>
 
           {
-            true && (
+            admin && (
 
               <div className="card margin-bottom-large wide-card admin-actions">
                 <div className="card-header">

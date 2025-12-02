@@ -1,6 +1,6 @@
 import "./UserLogin.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAdmin } from "../../../context/admin.context";
 import { useData } from "../../../context/data.context";
 import { useShopper } from "../../../context/shopper.context";

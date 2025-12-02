@@ -1,4 +1,4 @@
-// DataContext.js
+// AdminContext.js
 import React, { createContext, useContext, useState } from "react";
 import { login, logout } from "../api/admin.api";
 
@@ -9,7 +9,6 @@ const AdminContext = createContext();
 export const AdminProvider = ({ children }) => {
 
     const [admin, setAdmin] = useState(null);
-    const [user, setUser] = useState(null);
     
     const signIn = async (userData) => {
         const data = await login(userData);
@@ -20,11 +19,10 @@ export const AdminProvider = ({ children }) => {
     const signOut = () => {
         logout();
         setAdmin(null);
-        setUser(null);
     }
 
     return (
-        <AdminContext.Provider value={{ admin, user, setUser, signIn, signOut }}>
+        <AdminContext.Provider value={{ admin, signIn, signOut }}>
             {children}
         </AdminContext.Provider>
     );

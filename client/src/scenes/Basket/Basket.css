@@ -5,6 +5,7 @@
   border: 2px solid #b87334;
   border-radius: 12px; 
   margin: 10px; 
+  min-width: 50vw;
 }
 
 .basket h1 {
@@ -29,6 +30,24 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.basket-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  grid-column: 1 / -1;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: #0a0a0a;
+  border: 2px solid #b87334;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(184, 115, 52, 0.15);
+  transition: all 0.3s ease;
 }
 
 .basket-total-container {

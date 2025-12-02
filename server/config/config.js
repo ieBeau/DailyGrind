@@ -3,7 +3,7 @@ import 'dotenv/config';
 const configServer = {
     env: process.env.NODE_ENV || 'development',
     port: process.env.PORT || 3000,
-    jwtSecret: process.env.JWT_SECRET
+    jwtSecret: process.env.JWT_SECRET || 'no_secret'
 }
 
 const configDB = {

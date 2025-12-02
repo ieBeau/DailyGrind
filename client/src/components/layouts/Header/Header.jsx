@@ -1,8 +1,13 @@
 import './Header.css';
 import { Link } from 'react-router-dom';
+import { useAdmin } from '../../../context/admin.context.jsx';
 import BasketQuantitySize from '../../misc/BasketQuantitySize/BasketQuantitySize.jsx';
+import UserLogin from '../../misc/UserLogin/UserLogin.jsx';
 
 export default function Header () {
+
+    const { admin } = useAdmin();
+
     return (
         <div className='navbar'>
             <div className='nav-container'>
@@ -18,12 +23,19 @@ export default function Header () {
                 
                 {/* RIGHT: Admin + Basket - wrapped in proper container */}
                 <div className='nav-right'>
-                    <Link to="/product-management" className='nav-link'>Manage</Link>
-                    <Link to="/reports" className='nav-link'>Reports</Link>
-                    <Link to="/accounts" className='nav-link'>Accounts</Link>
+                    {
+                        admin && (
+                            <>
+                                <Link to="/product-management" className='nav-link'>Manage</Link>
+                                <Link to="/reports" className='nav-link'>Reports</Link>
+                                <Link to="/accounts" className='nav-link'>Accounts</Link>
+                            </>
+                        )
+                    }
                     <Link to="/basket" className='nav-link'>
                         Basket <span className="basket-count"><BasketQuantitySize /></span>
                     </Link>
+                    <UserLogin />
                 </div>
             </div>
         </div>

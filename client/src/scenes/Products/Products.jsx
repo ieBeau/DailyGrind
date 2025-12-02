@@ -2,8 +2,12 @@ import './Products.css';
 import { useState, useEffect } from 'react';
 import { updateBasketItem } from '../../api/basket.api';
 import { useBasket } from '../../context/basket.context'; 
+import { useAdmin } from '../../context/admin.context';
 
 export default function Products () {
+
+  const { admin } = useAdmin();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -190,19 +194,24 @@ const handleAddProduct = async () => {
             )}
           </div>
 
-          <div className="card margin-bottom-large wide-card admin-actions">
-            <div className="card-header">
-              <h3 className="heading-tertiary">Admin Actions</h3>
-            </div>
-            <div className="flex-layout gap-16 admin-buttons">
-              <button className="primary-button admin-btn" onClick={() => setShowUpdateModal(true)}>
-                Update Product Description                    
-              </button>
-              <button className="primary-button" onClick={() => setShowAddModal(true)}>
-                Add New Product                    
-              </button>   
-            </div>
-          </div> 
+          {
+            admin && (
+
+              <div className="card margin-bottom-large wide-card admin-actions">
+                <div className="card-header">
+                  <h3 className="heading-tertiary">Admin Actions</h3>
+                </div>
+                <div className="flex-layout gap-16 admin-buttons">
+                  <button className="primary-button admin-btn" onClick={() => setShowUpdateModal(true)}>
+                    Update Product Description                    
+                  </button>
+                  <button className="primary-button" onClick={() => setShowAddModal(true)}>
+                    Add New Product                    
+                  </button>   
+                </div>
+              </div> 
+            )
+          }
 
           <div className="card wide-card">
             <table className="table">
@@ -276,6 +285,16 @@ const handleAddProduct = async () => {
                             ))}
                         </select>
                     </div>
+                    <fieldset>
+                        <legend className="form-label">Current Description:</legend>
+                        <div className="current-description-box">
+                            {
+                              selectedProduct
+                                ? products.find(p => p.IDPRODUCT === Number(selectedProduct))?.DESCRIPTION
+                                : 'Please select a product to see its current description.'
+                            }
+                        </div>
+                    </fieldset>
                     <div className="form-group">
                         <label className="form-label">New Description:</label>
                         <input className="form-input"
@@ -287,7 +306,7 @@ const handleAddProduct = async () => {
                     </div>
                 </div>
                 <button className="primary-button margin-top-large" onClick={handleUpdateDescription}>
-                Update Description
+                  Update Description
                 </button>
             </div>
             <button className="primary-button" onClick={() => setShowUpdateModal(false)}>Close</button>

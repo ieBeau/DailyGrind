@@ -171,7 +171,6 @@ body {
   resize: vertical;
   min-height: 80px;
   max-height: 300px;
-  resize: vertical;
   overflow: auto;
   box-sizing: border-box;
   transition: height 0.2s ease;

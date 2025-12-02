@@ -265,8 +265,7 @@ const handleAddProduct = async () => {
       </div>    
       {showUpdateModal && (
         <div className="popup-overlay" onClick={() => setShowUpdateModal(false)}>
-          <div className="popup-message" onClick={(e) => e.stopPropagation()}>
-            <h3>Update Product Description</h3>                          
+          <div className="popup-message" onClick={(e) => e.stopPropagation()}>                                     
             <div className="card margin-bottom-large">
                 <div className="card-header">
                     <h2 className="heading-tertiary">Update Product Description</h2>
@@ -295,13 +294,13 @@ const handleAddProduct = async () => {
                             }
                         </div>
                     </fieldset>
-                    <div className="form-group">
-                        <label className="form-label">New Description:</label>
-                        <input className="form-input"
-                            type="text"
-                            value={newDescription}
-                            onChange={(e) => setNewDescription(e.target.value)}
-                            placeholder="Enter new description"
+                    <div className="form-group full-width">
+                        <label className="form-label">New Product Description:</label>
+                        <textarea className="form-textarea"
+                            rows="3"
+                            value={newProduct.description}
+                            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                            placeholder="Enter product description"
                         />
                     </div>
                 </div>
@@ -309,15 +308,14 @@ const handleAddProduct = async () => {
                   Update Description
                 </button>
             </div>
-            <button className="primary-button" onClick={() => setShowUpdateModal(false)}>Close</button>
+            <button className="primary-button margin-top-large" onClick={() => setShowUpdateModal(false)}>Save & Close</button>
           </div>
         </div>
       )}
 
       {showAddModal && (
         <div className="popup-overlay" onClick={() => setShowAddModal(false)}>
-          <div className="popup-message" onClick={(e) => e.stopPropagation()}>
-            <h3>Add New Product</h3>              
+          <div className="popup-message" onClick={(e) => e.stopPropagation()}>                        
             <div className="card margin-bottom-large">
                 <div className="card-header">
                     <h2 className="heading-tertiary">Add New Product</h2>
@@ -375,7 +373,7 @@ const handleAddProduct = async () => {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group">  
                         <label className="form-label">Active:</label>
                         <select className="form-select"
                             value={newProduct.active}
@@ -389,7 +387,7 @@ const handleAddProduct = async () => {
                         Add Product
                     </button>                
                 </div>                
-            <button className="primary-button" onClick={() => setShowAddModal(false)}>Close</button>
+            <button className="primary-button margin-top-large" onClick={() => setShowAddModal(false)}>Save & Close</button>
           </div>
         </div>
       )}

@@ -33,8 +33,6 @@ export const DataProvider = ({ children }) => {
                 })
             );
 
-            console.log('Baskets Data:', basketsData);
-
             handleBaskets(basketsData);
             
             setShoppers(shopperAdditions);

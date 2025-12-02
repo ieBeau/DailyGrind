@@ -14,6 +14,20 @@ export const getBaskets = async () => {
     return response.json();
 };
 
+export const createBasket = async () => {
+    const response = await fetchApi(`/basket`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) throw new Error("Failed to create basket");
+
+    return response.json();
+};
+
 export const getBasketItems = async function (basketId) {
     const response = await fetchApi(`/basket/${basketId}`, {
         method: 'GET',

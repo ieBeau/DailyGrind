@@ -8,8 +8,8 @@ import { useShopper } from "../../../context/shopper.context";
 export default function UserLogin() {
 
     const { admin, signIn, signOut } = useAdmin();
-    const { shopper, setShopper } = useShopper();
     const { shoppers } = useData();
+    const { shopper, setShopper } = useShopper();
 
     const [isLoading, setIsLoading] = useState(false);
     const [statusMessage, setStatusMessage] = useState({ type: null, text: "" });

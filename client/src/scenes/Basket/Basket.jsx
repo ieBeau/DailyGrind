@@ -20,7 +20,12 @@ export default function Basket () {
     const [taxAmount, setTaxAmount] = useState(0);
 
     useEffect(() => {
-        if (!shopper || shoppingCart.products.length === 0) return;
+        if (!shopper || shoppingCart.products.length === 0) {
+            setQuantity(0);
+            setSubtotal(0);
+            setTaxAmount(0);
+            return;
+        }
         
         const cartTotal = shoppingCart.products.reduce((total, item) => total + item.PRICE * item.QUANTITY, 0);
         

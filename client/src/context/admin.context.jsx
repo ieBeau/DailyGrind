@@ -13,6 +13,7 @@ export const AdminProvider = ({ children }) => {
     const signIn = async (userData) => {
         const data = await login(userData);
         setAdmin(data.admin);
+        return data;
     };
 
     const signOut = () => {

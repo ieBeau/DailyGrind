@@ -35,6 +35,7 @@ export default function Header () {
                     <Link to="/basket" className='nav-link'>
                         Basket <span className="basket-count"><BasketQuantitySize /></span>
                     </Link>
+                    
                     <UserLogin />
                 </div>
             </div>

@@ -7,7 +7,7 @@ const ShopperContext = createContext();
 // Provider
 export const ShopperProvider = ({ children }) => {
 
-    const [shopper, setShopper] = useState({});
+    const [shopper, setShopper] = useState(null);
 
     return (
         <ShopperContext.Provider value={{ shopper, setShopper }}>

@@ -27,7 +27,7 @@ export default function Basket () {
         setQuantity(shoppingCart.products.reduce((total, item) => total + item.QUANTITY, 0));
         
         // Task 3: Get Tax Amount
-        getOrderTax(shopper.STATE, cartTotal).then((data) => {
+        getOrderTax(shopper?.STATE, cartTotal).then((data) => {
             setSubtotal(data.subtotal || cartTotal);
             setTaxAmount(data.tax || 0);
         });
@@ -103,7 +103,7 @@ const mockBasketItems = [
                 <div className='basket-total-container'>
                     <h3>Shopping Cart</h3>
 
-                    <div className='basket-total-location'>{shopper.STATE ? `${shopper.STATE}, ${shopper.COUNTRY}` : ''}</div>
+                    <div className='basket-total-location'>{shopper?.STATE ? `${shopper.STATE}, ${shopper.COUNTRY}` : ''}</div>
 
                     <table className='basket-total-details'>
                         <tbody>

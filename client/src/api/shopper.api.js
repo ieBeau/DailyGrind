@@ -33,7 +33,7 @@ export const getShopperById = async (id) => {
     return response;
 };
 
-export const getShopperSpending = async (id) => {
+export const getShopperTotalSpending = async (id) => {
     const response = await fetchApi(`/shopper/${id}/spending`, {
         method: 'GET',
         headers: {

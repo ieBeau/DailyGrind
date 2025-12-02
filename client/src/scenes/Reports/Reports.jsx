@@ -37,6 +37,7 @@ export default function Reports () {
                                 <thead>
                                     <tr>
                                         <th>Basket ID</th>
+                                        <th>Shopper ID</th>
                                         <th>Shopper</th>
                                         <th>Quantity</th>
                                         <th>Status</th>
@@ -49,7 +50,8 @@ export default function Reports () {
                                         return (
                                             <tr key={basket.IDBASKET} className="basket-report">
                                                 <td>{basket.IDBASKET}</td>
-                                                <td>{shopper?.fullname}</td>
+                                                <td>{basket.IDSHOPPER}</td>
+                                                <td>{shopper?.FULLNAME}</td>
                                                 <td>{basket.QUANTITY}</td>
                                                 <td>{basket.STATUS}</td>
                                             </tr>

@@ -6,9 +6,10 @@ export const getAllShoppers = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
-        const result = await connection.execute(
-            `SELECT * FROM ${TABLE_NAME}`
-        );
+        const result = await connection.execute(`
+            SELECT s.*, s.FIRSTNAME || ' ' || s.LASTNAME AS FULLNAME
+            FROM ${TABLE_NAME} s
+        `);
 
         res.status(200).json(result.rows);
     } catch (error) {

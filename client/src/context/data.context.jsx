@@ -1,7 +1,7 @@
 // DataContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import { getShopperById, getShoppers, getShopperSpending } from "../api/shopper.api";
+import { getShoppers, getShopperTotalSpending } from "../api/shopper.api";
 import { getProducts } from "../api/product.api";
 import { getBasketItems, getBasketItemStatus, getBaskets } from "../api/basket.api";
 
@@ -25,10 +25,9 @@ export const DataProvider = ({ children }) => {
             // Report 2: Shopper Spending
             const shopperAdditions = await Promise.all(
                 shoppersData.map(async (shopper) => {
-                    const spending = await getShopperSpending({ id: shopper.IDSHOPPER });
+                    const spending = await getShopperTotalSpending(shopper.IDSHOPPER);
                     return { 
                         ...shopper,
-                        fullname: `${shopper.FIRSTNAME} ${shopper.LASTNAME}`,
                         spending
                     }
                 })

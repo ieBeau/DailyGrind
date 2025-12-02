@@ -11,8 +11,8 @@ export default function BasketQuantitySize() {
     const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
-      if (!shoppingCart.products || shoppingCart.products.length === 0) return;
-        setQuantity(shoppingCart.products.reduce((total, item) => total + item.QUANTITY, 0));
+      if (shoppingCart.products) setQuantity(shoppingCart.products.reduce((total, item) => total + item.QUANTITY, 0));
+      else setQuantity(0);
     }, [shoppingCart]);
 
   return (

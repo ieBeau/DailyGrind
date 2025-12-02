@@ -41,49 +41,49 @@ export default function Basket () {
 
     const isEmpty = !shoppingCart || shoppingCart.products.length === 0;
 
-    // Mock data for testing without backend
-const mockBasketItems = [
-    {
-        IDPRODUCT: 1,
-        PRODUCTNAME: "Espresso Roast",
-        DESCRIPTION: "Strong and bold espresso blend with rich flavor",
-        PRICE: 12.99,
-        QUANTITY: 2,
-        IMAGEURL: "/api/placeholder/80/80"
-    },
-    {
-        IDPRODUCT: 2, 
-        PRODUCTNAME: "Columbian Supreme",
-        DESCRIPTION: "Smooth and balanced medium roast coffee",
-        PRICE: 14.50,
-        QUANTITY: 1,
-        IMAGEURL: "/api/placeholder/80/80"
-    },
-    {
-        IDPRODUCT: 3,
-        PRODUCTNAME: "French Vanilla",
-        DESCRIPTION: "Sweet vanilla flavored coffee with creamy notes",
-        PRICE: 13.75,
-        QUANTITY: 1,
-        IMAGEURL: "/api/placeholder/80/80"
-    },
-    {
-        IDPRODUCT: 4,
-        PRODUCTNAME: "Dark Roast Blend", 
-        DESCRIPTION: "Intense and smoky dark roast for bold coffee lovers",
-        PRICE: 15.25,
-        QUANTITY: 3,
-        IMAGEURL: "/api/placeholder/80/80"
-    },
-    {
-        IDPRODUCT: 5,
-        PRODUCTNAME: "Hazelnut Cream",
-        DESCRIPTION: "Smooth coffee with rich hazelnut and cream flavors",
-        PRICE: 11.99,
-        QUANTITY: 1,
-        IMAGEURL: "/api/placeholder/80/80"
-    }
-];
+//     // Mock data for testing without backend
+// const mockBasketItems = [
+//     {
+//         IDPRODUCT: 1,
+//         PRODUCTNAME: "Espresso Roast",
+//         DESCRIPTION: "Strong and bold espresso blend with rich flavor",
+//         PRICE: 12.99,
+//         QUANTITY: 2,
+//         IMAGEURL: "/api/placeholder/80/80"
+//     },
+//     {
+//         IDPRODUCT: 2, 
+//         PRODUCTNAME: "Columbian Supreme",
+//         DESCRIPTION: "Smooth and balanced medium roast coffee",
+//         PRICE: 14.50,
+//         QUANTITY: 1,
+//         IMAGEURL: "/api/placeholder/80/80"
+//     },
+//     {
+//         IDPRODUCT: 3,
+//         PRODUCTNAME: "French Vanilla",
+//         DESCRIPTION: "Sweet vanilla flavored coffee with creamy notes",
+//         PRICE: 13.75,
+//         QUANTITY: 1,
+//         IMAGEURL: "/api/placeholder/80/80"
+//     },
+//     {
+//         IDPRODUCT: 4,
+//         PRODUCTNAME: "Dark Roast Blend", 
+//         DESCRIPTION: "Intense and smoky dark roast for bold coffee lovers",
+//         PRICE: 15.25,
+//         QUANTITY: 3,
+//         IMAGEURL: "/api/placeholder/80/80"
+//     },
+//     {
+//         IDPRODUCT: 5,
+//         PRODUCTNAME: "Hazelnut Cream",
+//         DESCRIPTION: "Smooth coffee with rich hazelnut and cream flavors",
+//         PRICE: 11.99,
+//         QUANTITY: 1,
+//         IMAGEURL: "/api/placeholder/80/80"
+//     }
+// ];
     return (
         <div className='basket'>
             { showCheckout && <Checkout amount={{ subtotal, taxAmount, total: subtotal + taxAmount }} onClose={() => setShowCheckout(false)} /> }
@@ -95,7 +95,7 @@ const mockBasketItems = [
                     {
                         isLoading ? <p>Loading...</p> :
                         false ? <p>Your basket is empty</p> :
-                        mockBasketItems.map((item) => (  // ← Change this line
+                        shoppingCart.products.map((item) => (  // ← Change this line
                             <BasketItem key={item.IDPRODUCT} basket={shoppingCart.basket} item={item} />
                         ))
                     }

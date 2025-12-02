@@ -22,7 +22,10 @@ export const BasketProvider = ({ children }) => {
             setShoppingCart({ basket: fetchBasket, products: fetchBasketItems });
         };
         if (shopper?.IDSHOPPER) fetchData();
+        else setShoppingCart({ basket: null, products: [] });
     }, [shopper, baskets]);
+
+    console.log(shoppingCart)
 
     return (
         <BasketContext.Provider value={{ shoppingCart, setShoppingCart }}>

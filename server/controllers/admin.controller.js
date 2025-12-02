@@ -33,7 +33,7 @@ export const signIn = async (req, res) => {
         const admin = await AdminSchema.findByUsername(username);
 
         if (!admin) return res.status(401).json({ message: 'User not found' });
-        if (!admin.authenticate(password)) return res.status(401).json({ message: 'Invalid credentials' });
+        if (!(await admin.authenticate(password))) return res.status(401).json({ message: 'Invalid credentials' });
         
         try { await admin.updateLastLogin(); } catch (e) { console.error('Failed to update last_login', e); }
 

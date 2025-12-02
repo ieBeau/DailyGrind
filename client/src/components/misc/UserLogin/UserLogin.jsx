@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAdmin } from "../../../context/admin.context";
 import "./UserLogin.css";
 

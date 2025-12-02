@@ -43,6 +43,11 @@ export const DataProvider = ({ children }) => {
         fetchData();
     }, []);
 
+    const refreshProducts = async () => {
+        const productsData = await getProducts();
+        setProducts(productsData);
+    }
+
     const handleBaskets = async (data) => {
         // Report 1: Basket Status
         const basketAdditions = await Promise.all(
@@ -57,7 +62,7 @@ export const DataProvider = ({ children }) => {
     };
 
     return (
-        <DataContext.Provider value={{ isLoading, products, setProducts, shoppers, setShoppers, baskets, setBaskets, handleBaskets }}>
+        <DataContext.Provider value={{ isLoading, products, setProducts, refreshProducts, shoppers, setShoppers, baskets, setBaskets, handleBaskets }}>
             {children}
         </DataContext.Provider>
     );

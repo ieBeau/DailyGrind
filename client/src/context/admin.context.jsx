@@ -1,4 +1,4 @@
-// DataContext.js
+// AdminContext.js
 import React, { createContext, useContext, useState } from "react";
 import { login, logout } from "../api/admin.api";
 

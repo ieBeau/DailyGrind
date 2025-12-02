@@ -2,7 +2,7 @@ import './Hero.css';
 
 import { Link } from 'react-router-dom';
 
-import heroImage from "../../../assets/images/bowl-coffee-beans.jpg";
+import heroImage from "/images/bowl-coffee-beans.jpg";
 
 const Hero = () => {
   return (

@@ -12,7 +12,7 @@ export const createAccount = async (req, res) => {
 
         const admin = await AdminSchema.save(email, username, password);
 
-        if (!admin.success) return res.status(401).json({ success: false, message: admin.message });
+        if (!admin.success) return res.status(409).json({ success: false, message: admin.message });
 
         const user = admin.user;
 

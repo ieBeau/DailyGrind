@@ -85,8 +85,6 @@ export default function Orders () {
 
         await updateShippingStatus(payload)
         .then((data) => {
-            // setSelectedBasket(null);
-            // setSelectedStatus(null);
             
             setStatusMessage({ type: "success", text: "Order status updated successfully!" });
 

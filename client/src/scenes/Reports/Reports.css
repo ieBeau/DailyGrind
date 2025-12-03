@@ -98,6 +98,53 @@
   padding: 0 20px;
 }
 
+.total-spending-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.shopper-select {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  border: 2px solid #b87334;
+  border-radius: 6px;
+  padding: 12px 12px;
+  font-family: "Lato", sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.shopper-select:focus {
+  outline: none;
+  border-color: #d2691e;
+  box-shadow: 0 0 0 3px rgba(184, 115, 52, 0.2);
+}
+
+.shopper-select option {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+.shopper-detail-container {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.shopper-detail-container p {
+  margin: 0;
+}
+
+.shopper-detail-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .wide-card {
   max-width: 1400px;
 }

@@ -67,7 +67,7 @@ export default function Basket () {
                         <>
                             <div className='basket-list'>
                                 {
-                                    Object.values(shoppingCart.products).map((item) => (  // ← Change this line
+                                    Object.values(shoppingCart.products).map((item) => (
                                         <BasketItem key={item.IDPRODUCT} basket={shoppingCart.basket} item={item} />
                                     ))
                                 }

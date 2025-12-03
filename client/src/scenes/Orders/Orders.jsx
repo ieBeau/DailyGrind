@@ -329,9 +329,6 @@ export default function Orders () {
                             </div>
                         </div>
 
-                        
-                                        
-                        
                         {/* Totals Section */}
                         <div className="order-totals-section">
                             

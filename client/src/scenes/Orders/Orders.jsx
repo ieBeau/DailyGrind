@@ -42,7 +42,7 @@ export default function Orders () {
                 shopperName: fullname,
                 shopperId: basket.IDSHOPPER,
                 dateCreated: formatDate(basket.DTCREATED),
-                stage: basket.STAGE,
+                stage: basket.IDSTAGE,
                 quantity: totalQuantity,
                 total: basket.TOTAL,
                 items: basket.ITEMS ?? [],
@@ -87,7 +87,7 @@ export default function Orders () {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {placedOrders.map((order) => (
+                                    {placedOrders.map((order, index) => (
                                         <tr key={order.id}>
                                             <td>{order.id}</td>
                                             {isAdmin && <td>{order.shopperName}</td>}
@@ -97,11 +97,12 @@ export default function Orders () {
                                             <td>${Number(order.total).toFixed(2)}</td>
                                             <td>{order.stage}</td>
                                             <td>
-                                                <button onClick={() => {
-                                                    setSelectedBasket(order);
-                                                    setSelectedStatus(order.stage);
-                                                    }
-                                                }>
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedBasket(order);
+                                                        setSelectedStatus(order.stage);
+                                                    }}
+                                                >
                                                     View
                                                 </button>
                                             </td>
@@ -126,7 +127,7 @@ export default function Orders () {
                             <p>Order Date: {selectedBasket.dateCreated}</p>
                             {isAdmin && (
                                 <p>Shopper: {selectedBasket.shopperName} (ID: {selectedBasket.shopperId})</p>
-                            )};
+                            )}
                                 <div className="order-status-update">
                                     <p>Order Status: </p>
                                     {isAdmin ? (

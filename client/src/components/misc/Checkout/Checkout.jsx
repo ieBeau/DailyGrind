@@ -3,7 +3,7 @@ import "./Checkout.css";
 import { useShopper } from "../../../context/shopper.context";
 import { useBasket } from "../../../context/basket.context";
 import { useState } from "react";
-import { updateBasketShippingStatus } from "../../../api/basket.api";
+import { updateShippingStatus } from "../../../api/basket.api";
 
 export default function Checkout({ amount, onClose }) {
 
@@ -28,7 +28,7 @@ export default function Checkout({ amount, onClose }) {
     const confirmButton = document.getElementById('confirm');
         
     // Task 4: Update Basket Shipping Status
-    updateBasketShippingStatus(shoppingCart.basket)
+    updateShippingStatus(shoppingCart.basket)
     .then(_ => {
         setPaymentConfirmed(true);
 

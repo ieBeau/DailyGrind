@@ -5,7 +5,7 @@ import {
     getBasketItems,
     checkBasketItemsInStock,
     addBasketItem,
-    updateBasketShippingStatus,
+    updateShippingStatus,
     deleteBasketItem
 } from '../controllers/basket.controller.js';
 
@@ -16,7 +16,7 @@ router.post('/', createBasket);
 router.get('/:idbasket', getBasketItems);
 router.get('/:idbasket/status', checkBasketItemsInStock)
 router.post('/:idbasket', addBasketItem);
-router.put('/:idbasket/shipping', updateBasketShippingStatus);
+router.put('/:idbasket/shipping', updateShippingStatus);
 router.delete('/:idbasket/item/:idbasketitem', deleteBasketItem);
 
 export default router;

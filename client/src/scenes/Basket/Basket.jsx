@@ -45,6 +45,7 @@ export default function Basket () {
     }
 
     const isEmpty = !shoppingCart || Object.keys(shoppingCart.products).length === 0;
+    const maxItems = shoppingCart.basket?.STATUS.includes("NOT");
 
     return (
         <div className='basket'>
@@ -100,16 +101,16 @@ export default function Basket () {
                                 
                                 <button
                                     onClick={handleCheckout}
-                                    disabled={isEmpty}
-                                    aria-disabled={isEmpty}
-                                    tabIndex={isEmpty ? -1 : 0}
+                                    disabled={isEmpty || maxItems}
+                                    aria-disabled={isEmpty || maxItems}
+                                    tabIndex={isEmpty || maxItems ? -1 : 0}
                                     style={{
-                                        pointerEvents: isEmpty ? 'none' : 'auto',
-                                        opacity: isEmpty ? 0.6 : 1,
-                                        cursor: isEmpty ? 'default' : 'pointer'
+                                        pointerEvents: isEmpty || maxItems ? 'none' : 'auto',
+                                        opacity: isEmpty || maxItems ? 0.6 : 1,
+                                        cursor: isEmpty || maxItems ? 'default' : 'pointer'
                                     }}
                                 >
-                                    Proceed to Checkout
+                                    { maxItems ? shoppingCart.basket.STATUS : "Proceed to Checkout" }
                                 </button>
                             </div>
                         </>

@@ -217,19 +217,6 @@ export default function Products () {
                     <td className="product-price">${product.PRICE.toFixed(2)}</td>                    
                     <td>
                       <div className="quantity-controls">
-                        <button
-                          className="add-btn"
-                          disabled={!shopper}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleQuantityChange(product, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1);
-                          }}
-                        >
-                          +
-                        </button>
-                        <span className="quantity-display">
-                          {shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0}
-                        </span>
                         <button 
                           className="remove-btn"
                           disabled={!shopper}
@@ -239,6 +226,19 @@ export default function Products () {
                           }}
                         >
                           -  
+                        </button>
+                        <span className="quantity-display">
+                          {shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0}
+                        </span>
+                        <button
+                          className="add-btn"
+                          disabled={!shopper}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuantityChange(product, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1);
+                          }}
+                        >
+                          +
                         </button>
                       </div>
                     </td>

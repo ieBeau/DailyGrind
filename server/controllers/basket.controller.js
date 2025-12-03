@@ -145,22 +145,25 @@ export const checkBasketItemsInStock = async (req, res) => {
 };
 
 // Task 4: Update Shipping Status
-export const updateBasketShippingStatus = async (req, res) => {
+export const updateShippingStatus = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
 
         const basket_status = {
-            ...req.body,
             basketid: parseInt(req.params.idbasket),
-            date:     new Date(req.body.date)
+            stageid: parseInt(req.body.idStage),
+            date: new Date(req.body.dateShipped),
+            shipper: req.body.shipper,
+            shipnum: req.body.trackingNumber,
+            notes: req.body.notes
         }
 
         await connection.execute('BEGIN STATUS_SHIP_SP(:in_basketid, :in_date, :in_shipper, :in_shipnum); END;', {
-            in_basketid: basket_status.basketid, // Require: Task 4
-            in_date:     basket_status.date,     // Require: Task 4
-            in_shipper:  basket_status.shipper,  // Require: Task 4
-            in_shipnum:  basket_status.shipnum   // Require: Task 4
+            in_basketid: basket_status.basketid,    // Require: Task 4
+            in_date:     basket_status.date,        // Require: Task 4
+            in_shipper:  basket_status.shipper,     // Require: Task 4
+            in_shipnum:  basket_status.shipnum      // Require: Task 4
         }, { autoCommit: true });
         
         res.status(200).json({ message: "Shipping status updated successfully!", basket_status });

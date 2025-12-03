@@ -78,19 +78,15 @@ export const deleteBasketItem = async (basketId, basketItemId) => {
     return response;
 };
 
-// Task 4: Update Basket Shipping Status
-export const updateBasketShippingStatus = async (basket, date, shipper, shipnum) => {
-    const response = await fetchApi(`/basket/${basket.IDBASKET}/shipping`, {
+// Task 4: Update Shipping Status
+export const updateShippingStatus = async (data) => {
+    const response = await fetchApi(`/basket/${data.idBasket}/shipping`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            "date": date,
-            "shipper": shipper,
-            "shipnum": shipnum 
-        })
+        body: JSON.stringify(data)
     })
     .then(response => response.json())
     .catch(error => { throw new Error("Network error: " + error.message) });

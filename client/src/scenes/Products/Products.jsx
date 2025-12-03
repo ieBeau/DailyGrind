@@ -217,19 +217,6 @@ export default function Products () {
                     <td className="product-price">${product.PRICE.toFixed(2)}</td>                    
                     <td>
                       <div className="quantity-controls">
-                        <button
-                          className="add-btn"
-                          disabled={!shopper}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleQuantityChange(product, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1);
-                          }}
-                        >
-                          +
-                        </button>
-                        <span className="quantity-display">
-                          {shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0}
-                        </span>
                         <button 
                           className="remove-btn"
                           disabled={!shopper}
@@ -239,6 +226,19 @@ export default function Products () {
                           }}
                         >
                           -  
+                        </button>
+                        <span className="quantity-display">
+                          {shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0}
+                        </span>
+                        <button
+                          className="add-btn"
+                          disabled={!shopper}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleQuantityChange(product, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1);
+                          }}
+                        >
+                          +
                         </button>
                       </div>
                     </td>
@@ -262,6 +262,8 @@ export default function Products () {
           </div>
         </div>
       </div>    
+
+      {/* Update Product Description */}
       {showUpdateModal && (
         <div className="popup-overlay" onClick={() => setShowUpdateModal(false)}>
           <div className="popup-message" onClick={(e) => e.stopPropagation()}>                                     
@@ -273,7 +275,7 @@ export default function Products () {
                     <div className="form-group">
                         <label className="form-label">Select Product:</label>
                         <select className="form-select"
-                            value={selectedProduct.IDPRODUCT || ""}
+                            value={selectedProduct?.IDPRODUCT || ""}
                             onChange={(e) => setSelectedProduct(products.find(p => p.IDPRODUCT === Number(e.target.value)))}>
                             <option value="">-- Select a product --</option>
                             {products.map((product) => (
@@ -312,6 +314,7 @@ export default function Products () {
         </div>
       )}
 
+      {/* Add New Product */}
       {showAddModal && (
         <div className="popup-overlay" onClick={() => setShowAddModal(false)}>
           <div className="popup-message" onClick={(e) => e.stopPropagation()}>                        

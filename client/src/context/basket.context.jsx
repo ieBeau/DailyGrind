@@ -24,7 +24,6 @@ export const BasketProvider = ({ children }) => {
                 return acc;
             }, {});
             setShoppingCart({ basket: fetchBasket, products: productsById });
-            return;
         };
         if (shopper?.IDSHOPPER) fetchData();
         else setShoppingCart({ basket: null, products: {} });

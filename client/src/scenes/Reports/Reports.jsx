@@ -29,7 +29,7 @@ export default function Reports () {
     
     useEffect(() => {
         if (customerId) fetchTotalPurchases();
-    }, [customerId]);
+    }, [customerId, shoppers]);
 
     return (
         <div className='reports'>

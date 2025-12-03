@@ -113,6 +113,7 @@ export default function Orders () {
     const handleCloseModal = () => {
         setSelectedBasket(null);
         setSelectedStatus(null);
+        setStatusMessage({ type: null, text: "" });
     };
 
     const [subtotal, setSubtotal] = useState(0);

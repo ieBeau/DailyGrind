@@ -262,6 +262,8 @@ export default function Products () {
           </div>
         </div>
       </div>    
+
+      {/* Update Product Description */}
       {showUpdateModal && (
         <div className="popup-overlay" onClick={() => setShowUpdateModal(false)}>
           <div className="popup-message" onClick={(e) => e.stopPropagation()}>                                     
@@ -273,7 +275,7 @@ export default function Products () {
                     <div className="form-group">
                         <label className="form-label">Select Product:</label>
                         <select className="form-select"
-                            value={selectedProduct.IDPRODUCT || ""}
+                            value={selectedProduct?.IDPRODUCT || ""}
                             onChange={(e) => setSelectedProduct(products.find(p => p.IDPRODUCT === Number(e.target.value)))}>
                             <option value="">-- Select a product --</option>
                             {products.map((product) => (
@@ -312,6 +314,7 @@ export default function Products () {
         </div>
       )}
 
+      {/* Add New Product */}
       {showAddModal && (
         <div className="popup-overlay" onClick={() => setShowAddModal(false)}>
           <div className="popup-message" onClick={(e) => e.stopPropagation()}>                        

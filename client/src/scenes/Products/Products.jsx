@@ -1,22 +1,24 @@
 import './Products.css';
 import { useState, useEffect } from 'react';
-import { updateBasketItem } from '../../api/basket.api';
+import { addBasketItem, deleteBasketItem } from '../../api/basket.api';
 import { useBasket } from '../../context/basket.context'; 
 import { useAdmin } from '../../context/admin.context';
 import { useData } from '../../context/data.context';
 import { createProduct, deleteProductById, updateProductDescription } from '../../api/product.api';
+import { useShopper } from '../../context/shopper.context';
 
 export default function Products () {
 
   const { admin } = useAdmin();
-  const { isLoading, products, setProducts, refreshProducts } = useData();
-  const { shoppingCart } = useBasket();
+  const { shopper } = useShopper();
+  const { isLoading, products, setProducts, refreshProducts, baskets, handleBaskets } = useData();
+  const { shoppingCart, setShoppingCart } = useBasket();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [cartQuantities, setCartQuantities] = useState({});
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [addedProduct, setAddedProduct] = useState({});
   const [newDescription, setNewDescription] = useState('');
   const defaultProduct = {
     PRODUCTNAME: '',
@@ -70,19 +72,76 @@ export default function Products () {
       });
   };
 
-  const handleQuantityChange = async (productId, newQuantity) => {
-    const currentQty = cartQuantities[productId] || 0;
+  const handleQuantityChange = async (product, newQuantity) => {
+    const productId = product.IDPRODUCT;
     newQuantity = Math.max(0, newQuantity);     
     
-    setCartQuantities(prev => ({
-        ...prev,
-        [productId]: newQuantity
-    }));
+    setShoppingCart(prev => {
+        const existingProduct = prev.products[productId];
+        let updatedProducts = prev.products;
+        if (existingProduct) {
+          updatedProducts[productId] = { ...existingProduct, QUANTITY: newQuantity };
+        } else {
+          const productToAdd = products.find(p => p.IDPRODUCT === productId);
+          updatedProducts[productId] = { ...productToAdd, QUANTITY: newQuantity };
+      }
+      return { ...prev, products: updatedProducts };
+    });
 
-    // Update basket via API
-    const product = products.find(p => p.IDPRODUCT === productId);
-    if (product && shoppingCart.basket) await updateBasketItem(shoppingCart.basket, product, newQuantity);
+    setAddedProduct(prev => ({ ...prev, [productId]: true }));
   };
+  
+  // Task 5: Add Basket Item
+  useEffect(() => {
+    if (Object.keys(addedProduct).length === 0) return;
+
+    const timeout = setTimeout(() => {
+      Object.entries(addedProduct).forEach(async ([productId, _]) => {
+        const basketId = shoppingCart.basket.IDBASKET;
+        const basketItem = shoppingCart.products[productId];
+        const quantity = shoppingCart.products[productId].QUANTITY;
+
+        if (quantity === 0) deleteBasketItem(basketId, basketItem.IDBASKETITEM);
+        else addBasketItem(basketId, basketItem, quantity);
+
+        if (quantity === 0) {
+          const updatedProducts = { ...shoppingCart.products };
+          delete updatedProducts[productId];
+          setShoppingCart(prev => ({ ...prev, products: updatedProducts }));
+        }
+        
+        // Update baskets quantity and items in Data Context
+        const basketAddition = baskets.map(prevBasket => {
+            if (prevBasket.IDBASKET === shoppingCart.basket.IDBASKET) {
+                const basketQuantity = prevBasket.ITEMS.reduce((sum, bi) => {
+                    if (bi.IDPRODUCT === basketItem.IDPRODUCT) return sum + quantity;
+                    return sum + bi.QUANTITY;
+                }, 0);
+
+                if (quantity === 0) {
+                  const filteredItems = prevBasket.ITEMS.filter(bi => bi.IDPRODUCT !== basketItem.IDPRODUCT);
+                  return { ...prevBasket, QUANTITY: basketQuantity, ITEMS: filteredItems };
+                } else {
+                  const updatedItems = prevBasket.ITEMS.map(bi => {
+                    if (bi.IDPRODUCT === basketItem.IDPRODUCT) return { ...bi, QUANTITY: quantity };
+                    return bi;
+                  });
+                  return { ...prevBasket, QUANTITY: basketQuantity, ITEMS: updatedItems };
+                }
+
+            }
+            return prevBasket;
+        });
+          
+        handleBaskets(basketAddition);
+      });
+
+      setAddedProduct({});
+
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [addedProduct]);
 
   const handleDeleteProduct = async (productId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this product?");
@@ -160,24 +219,26 @@ export default function Products () {
                       <div className="quantity-controls">
                         <button
                           className="add-btn"
+                          disabled={!shopper}
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleQuantityChange(product.IDPRODUCT, (cartQuantities[product.IDPRODUCT] || 0) + 1);
+                            handleQuantityChange(product, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1);
                           }}
                         >
-                          ADD
+                          +
                         </button>
                         <span className="quantity-display">
-                          {cartQuantities[product.IDPRODUCT] || 0}
+                          {shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0}
                         </span>
                         <button 
                           className="remove-btn"
+                          disabled={!shopper}
                           onClick={(e) => {
                             e.stopPropagation(); // ← Prevents modal from opening
-                            handleQuantityChange(product.IDPRODUCT, Math.max(0, (cartQuantities[product.IDPRODUCT] || 0) - 1));
+                            handleQuantityChange(product, Math.max(0, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) - 1));
                           }}
                         >
-                          REMOVE  
+                          -  
                         </button>
                       </div>
                     </td>

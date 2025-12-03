@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./BasketItem.css";
-import { updateBasketItem } from "../../../api/basket.api";
+import { addBasketItem } from "../../../api/basket.api";
 import { useBasket } from "../../../context/basket.context";
 import { useData } from "../../../context/data.context";
 
@@ -39,14 +39,12 @@ export default function BasketItemCard({ basket, item }) {
         if (initializing) return;
 
         const timeout = setTimeout(() => {
-            updateBasketItem(basket, item, quantity);
+            addBasketItem(basket.IDBASKET, item, quantity);
 
             // Update shopping cart in Basket Context
             setShoppingCart(prev => {
-                const updatedProducts = prev.products.map(prod => {
-                    if (prod.IDPRODUCT === item.IDPRODUCT) return { ...prod, QUANTITY: quantity };
-                    return prod;
-                });
+                const updatedProducts = { ...prev.products };
+                updatedProducts[item.IDPRODUCT] = { ...updatedProducts[item.IDPRODUCT], QUANTITY: quantity };
                 return { ...prev, products: updatedProducts };
             });
 

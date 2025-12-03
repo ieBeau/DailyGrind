@@ -26,7 +26,6 @@ export default function Header () {
                     {
                         admin && (
                             <>
-                                <Link to="/product-management" className='nav-link'>Manage</Link>
                                 <Link to="/reports" className='nav-link'>Reports</Link>
                                 <Link to="/accounts" className='nav-link'>Accounts</Link>
                             </>

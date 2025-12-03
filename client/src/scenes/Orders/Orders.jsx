@@ -255,7 +255,7 @@ export default function Orders () {
 
                                 <div className="order-detail-value">
                                     {isAdmin && (
-                                        <input placeholder="Date Shipped" name="dateShipped" className="form-input" />
+                                        <input type="date" placeholder="Date Shipped" name="dateShipped" className="form-input" />
                                     )}
                                 </div>
                             </div>

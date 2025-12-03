@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./BasketItem.css";
-import { addBasketItem } from "../../../api/basket.api";
+import { addBasketItem, deleteBasketItem } from "../../../api/basket.api";
 import { useBasket } from "../../../context/basket.context";
 import { useData } from "../../../context/data.context";
 
@@ -12,8 +12,8 @@ export default function BasketItemCard({ basket, item }) {
     const [initializing, setInitializing] = useState(true);
     const [quantity, setQuantity] = useState(item.QUANTITY);
 
-    const handleChange = (e) => {
-        const raw = e.target.value;
+    const handleChange = (value) => {
+        const raw = value.toString();
         
         if (raw === '') {
             setQuantity(0);
@@ -39,7 +39,8 @@ export default function BasketItemCard({ basket, item }) {
         if (initializing) return;
 
         const timeout = setTimeout(() => {
-            addBasketItem(basket.IDBASKET, item, quantity);
+            if (quantity === 0) deleteBasketItem(basket.IDBASKET, item.IDBASKETITEM);
+            else addBasketItem(basket.IDBASKET, item, quantity);
 
             // Update shopping cart in Basket Context
             setShoppingCart(prev => {
@@ -88,14 +89,14 @@ export default function BasketItemCard({ basket, item }) {
                             <td className="basket-item-total">Total</td>
                         </tr>
                         <tr>
-                            <td><input className="basket-item-quantity" type="number" min="0" max="99" value={quantity} onChange={handleChange} /></td>
+                            <td><input className="basket-item-quantity" type="number" min="0" max="99" value={quantity} onChange={e => handleChange(e.target.value)} /></td>
                             <td className="basket-item-total-value">${(item.PRICE * quantity).toFixed(2)}</td> 
                         </tr>
                         <tr>
                             <td>                            
                                 <div className="basket-quick-actions">
-                                    <button className="add-btn">ADD</button>
-                                    <button className="remove-btn">REMOVE</button>
+                                    <button className="add-btn" onClick={() => handleChange(quantity + 1)}>ADD</button>
+                                    <button className="remove-btn" onClick={() => handleChange(quantity - 1)}>REMOVE</button>
                                 </div>
                             </td>
                         </tr>

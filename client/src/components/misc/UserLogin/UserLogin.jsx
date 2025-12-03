@@ -65,7 +65,7 @@ export default function UserLogin() {
             { showLoginForm && 
                 (
                     <div className="user-login-background" onMouseDown={(e) => { if (e.target === e.currentTarget) setLoginForm(false); }}>
-                        <div className="user-login-form">
+                        <form className="user-login-form" onSubmit={handleLogin}>
                             <h2>Admin Login</h2>
                             
                             <div className="form-group">
@@ -91,17 +91,17 @@ export default function UserLogin() {
                                 </select>
                             </div>
 
-                            <button onClick={handleLogin} disabled={isLoading}>
+                            <button type="submit" disabled={isLoading}>
                                 {isLoading ? "Logging in..." : "Login"}
                             </button>
-                            <button onClick={handleCancel} disabled={isLoading}>
+                            <button type="button" onClick={handleCancel} disabled={isLoading}>
                                 Cancel
                             </button>
 
                             <div className={`status-message ${statusMessage.type}`}>
                                 {statusMessage.type ? statusMessage.text : ""}
                             </div>
-                        </div>
+                        </form>
                     </div>
                 )
             }

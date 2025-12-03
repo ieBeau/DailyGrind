@@ -34,12 +34,11 @@ export default function Orders () {
 
         return filtered.map((basket) => {
             const shopperRow = shoppers?.find((s) => s.IDSHOPPER === basket.IDSHOPPER);
-            const fullname = shopperRow?.fullname;
             const totalQuantity = basket.QUANTITY ?? basket.ITEMS?.reduce((sum, item) => sum + item.QUANTITY, 0) ?? 0;
 
             return {
                 id: basket.IDBASKET,
-                shopperName: fullname,
+                shopperName: shopperRow?.FULLNAME ?? "Unknown Shopper",
                 shopperId: basket.IDSHOPPER,
                 dateCreated: formatDate(basket.DTCREATED),
                 stage: basket.IDSTAGE,

@@ -85,8 +85,6 @@ export default function Orders () {
 
         await updateShippingStatus(payload)
         .then((data) => {
-            // setSelectedBasket(null);
-            // setSelectedStatus(null);
             
             setStatusMessage({ type: "success", text: "Order status updated successfully!" });
 
@@ -115,6 +113,7 @@ export default function Orders () {
     const handleCloseModal = () => {
         setSelectedBasket(null);
         setSelectedStatus(null);
+        setStatusMessage({ type: null, text: "" });
     };
 
     const [subtotal, setSubtotal] = useState(0);
@@ -255,7 +254,7 @@ export default function Orders () {
 
                                 <div className="order-detail-value">
                                     {isAdmin && (
-                                        <input placeholder="Date Shipped" name="dateShipped" className="form-input" />
+                                        <input type="date" placeholder="Date Shipped" name="dateShipped" className="form-input" />
                                     )}
                                 </div>
                             </div>
@@ -329,9 +328,6 @@ export default function Orders () {
                             </div>
                         </div>
 
-                        
-                                        
-                        
                         {/* Totals Section */}
                         <div className="order-totals-section">
                             

@@ -246,7 +246,6 @@ export default function Orders () {
                         Close
                     </button>
                 </div>
-        
              </div>
         </div>
     </div>

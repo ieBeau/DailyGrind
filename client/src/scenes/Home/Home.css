@@ -1,0 +1,9 @@
+.home-page {
+  min-height: 90vh; 
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    min-height: auto;
+  }
+}

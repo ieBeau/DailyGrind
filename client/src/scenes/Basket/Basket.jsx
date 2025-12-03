@@ -45,7 +45,7 @@ export default function Basket () {
     }
 
     const isEmpty = !shoppingCart || Object.keys(shoppingCart.products).length === 0;
-    const maxItems = shoppingCart.basket?.STATUS.includes("NOT");
+    const maxItems = typeof shoppingCart.basket?.STATUS === "string" && shoppingCart.basket.STATUS.includes("NOT");
 
     return (
         <div className='basket'>

@@ -12,6 +12,8 @@ export default function BasketItemCard({ basket, item }) {
     const [initializing, setInitializing] = useState(true);
     const [quantity, setQuantity] = useState(item.QUANTITY);
 
+    const inStock = item.QUANTITY <= item.STOCK;
+
     const handleChange = (value) => {
         const raw = value.toString();
         
@@ -77,6 +79,7 @@ export default function BasketItemCard({ basket, item }) {
         <div key={item.IDPRODUCT} className='basket-item-card'>
             <div className="basket-item-header">
                 <p className="basket-item-name">{item.PRODUCTNAME}</p>
+                {!inStock && <p className="out-of-stock">Not enough in stock!</p>}
                 <p>${item.PRICE.toFixed(2)}</p>
             </div>
             <div className="basket-item-body">

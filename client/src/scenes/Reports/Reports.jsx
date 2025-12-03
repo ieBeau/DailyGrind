@@ -1,33 +1,43 @@
 import './Reports.css';
 
 import { useData } from '../../context/data.context';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import reportApi from '../../api/report.api';
 
 export default function Reports () {
 
     const { isLoading, baskets, shoppers } = useData();
     const [customerId, setCustomerId] = useState('');
-    const [totalPurchases, setTotalPurchases] = useState(null);
+    const [accountInfo, setAccountInfo] = useState(null);
     const [error, setError] = useState(null);
 
     const fetchTotalPurchases = async () => {
         setError(null);
-        setTotalPurchases(null);
+        setAccountInfo(null);
         try {
             const data = await reportApi.getTotalPurchases(customerId);
-            setTotalPurchases(data.total);
+            const info = shoppers.find(s => s.IDSHOPPER === parseInt(customerId));
+            setAccountInfo({
+                ...info,
+                id: customerId,
+                totalPurchase: parseFloat(data.total) || 0
+            });
         } catch (err) {
             setError(err.message || 'Failed to fetch total purchases');
         }
     };
-
+    
+    useEffect(() => {
+        if (customerId) fetchTotalPurchases();
+    }, [customerId]);
 
     return (
         <div className='reports'>
             <div className="content-wrapper">
                 <div className="card wide-card">
                     <h1>Reports Page</h1>
+
+                    {/* Basket Status Report */}
                     <section>
                         <h2>Basket Status Report</h2>
 
@@ -63,20 +73,42 @@ export default function Reports () {
                         </>                
                     }
                 </section>
+
+                {/* Shopper's Total Spending */}
                 <section>
                     <h2>Total Purchases Report</h2>
-                        <input
-                            type="text"
-                            placeholder="Shopper ID"
-                            value={customerId}
-                            onChange={(e) => setCustomerId(e.target.value)}
-                        />
-                    <button onClick={fetchTotalPurchases}>Customer Total</button>
-                        {totalPurchases !== null ? (
-                            <p>Total Purchases: {totalPurchases}</p>
-                        ) : (
-                            <p>No Customer Total Found</p>
-                        )}
+
+                    <div className='total-spending-container'>
+                        <select value={customerId} onChange={(e) => setCustomerId(e.target.value)} className="shopper-select">
+                            <option value="">Select Shopper</option>
+                            {shoppers.map((shopper) => (
+                                <option key={shopper.IDSHOPPER} value={shopper.IDSHOPPER} >
+                                    {shopper.FULLNAME} (ID: {shopper.IDSHOPPER})
+                                </option>
+                            ))}
+                        </select>
+
+                        <div>
+                            <div className='shopper-detail-container'>
+                                <label>Customer Details</label>
+
+                                <div className='shopper-detail-row'>
+                                    <label>Customer:</label>
+                                    <p>{accountInfo?.FULLNAME ?? "--"}</p>
+                                </div>
+
+                                <div className='shopper-detail-row'>
+                                    <label>Customer ID:</label>
+                                    <p>{accountInfo?.id ?? "--"}</p>
+                                </div>
+
+                                <div className='shopper-detail-row'>
+                                    <label>Total Purchases:</label>
+                                    <p>{accountInfo?.totalPurchase ? `$${accountInfo?.totalPurchase.toFixed(2)}` : "--"}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>

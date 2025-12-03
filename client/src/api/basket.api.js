@@ -65,7 +65,6 @@ export const addBasketItem = async (basketid, product, quantity) => {
 };
 
 export const deleteBasketItem = async (basketId, basketItemId) => {
-    console.log("Deleting basket item:", basketId, basketItemId);
     const response = await fetchApi(`/basket/${basketId}/item/${basketItemId}`, {
         method: 'DELETE',
         credentials: 'include',

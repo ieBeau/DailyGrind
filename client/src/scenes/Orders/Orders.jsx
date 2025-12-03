@@ -52,25 +52,37 @@ export default function Orders () {
     const isAdmin = !!admin;
     const isLoggedIn = isAdmin || !!shopper;
 
+    // Simple status update handler
+    const handleUpdateStatus = async () => {
+        if (!selectedBasket || !selectedStatus) return;
+        // Add your update logic here
+    };
+
+    const handleCloseModal = () => {
+        setSelectedBasket(null);
+        setSelectedStatus(null);
+    };
+
     return (
         <div className="order">
             <div className="content-wrapper">
-                <h1>
-                    {isAdmin
-                        ? "All Orders"
-                        : shopper
-                            ? "My Orders"
-                            : "Orders"}
-                </h1>
+                <div className="card wide-card">
+                    <h1>
+                        {isAdmin
+                            ? "All Orders"
+                            : shopper
+                                ? "My Orders"
+                                : "Orders"}
+                    </h1>
 
-                {!isLoggedIn && (
-                    <p>Please log in to view your orders.</p>
-                )}
+                    {!isLoggedIn && (
+                        <p>Please log in to view your orders.</p>
+                    )}
 
-                {isLoggedIn && (
-                    placedOrders.length === 0 ? (
-                        <p>No orders found.</p>
-                    ) : (
+                    {isLoggedIn && (
+                        placedOrders.length === 0 ? (
+                            <p>No orders found.</p>
+                        ) : (
                         <div className="orders-table-wrapper">
                             <table className="orders-table">
                                 <thead>
@@ -112,27 +124,43 @@ export default function Orders () {
                         </div>
                     )
                 )}
+            </div>
+        </div>
 
-                {/* Pop Up */}
-                {selectedBasket && (
-                    <div className="order-modal-backdrop" onClick={() => setSelectedBasket(null)}>
-                        <div className="order-modal" onClick={(e) => e.stopPropagation()}>
+            {/* Pop Up */}
+            {selectedBasket && (
+                <div className="order-modal-backdrop" onClick={() => setSelectedBasket(null)}>
+                    <div className="order-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="card margin-bottom-large">
+
+                            {/* Header */}
                             <div className="order-modal-header">
-                                <h2>Order #{selectedBasket.id}</h2>
-                                <button className="close-btn" onClick={() => setSelectedBasket(null)}>
-                                    ✕
-                                </button>
+                                <h1 className="heading-tertiary">View Order #{selectedBasket.id}</h1>
                             </div>
-                            <p>Order Date: {selectedBasket.dateCreated}</p>
-                            {isAdmin && (
-                                <p>Shopper: {selectedBasket.shopperName} (ID: {selectedBasket.shopperId})</p>
-                            )}
-                                <div className="order-status-update">
-                                    <p>Order Status: </p>
-                                    {isAdmin ? (
-                                        <select
-                                            value={selectedStatus ?? selectedBasket.stage}
+
+                            {/* Order Details */}
+                            <div className="order-details-grid">
+                                <div className="order-detail-row">
+                                    <div className="order-detail-label">Order Date:</div>
+                                    <div className="order-detail-value">{selectedBasket.dateCreated}</div>
+                                </div>
+                                
+                                <div className="order-detail-row">
+                                    <div className="order-detail-label">Shopper:</div>
+                                    <div className="order-detail-value">
+                                        {isAdmin ? `${selectedBasket.shopperName} (ID: ${selectedBasket.shopperId})` : "Your Order"}
+                                    </div>
+                                </div>
+                                
+                                {/* Order Status */}
+                                <div className="order-detail-row">
+                                    <div className="order-detail-label">Order Status:</div>
+                                    <div className="order-detail-value">
+                                        {isAdmin ? (
+                                        <select 
+                                            value={selectedStatus ?? selectedBasket.stage} 
                                             onChange={(e) => setSelectedStatus(e.target.value)}
+                                            className="status-select"
                                         >
                                             <option value="1">Pending</option>
                                             <option value="2">Processing</option>
@@ -141,40 +169,86 @@ export default function Orders () {
                                             <option value="5">Cancelled</option>
                                         </select>
                                     ) : (
-                                        <span>{selectedBasket.stage}</span>
+                                        <span className={`status-${selectedBasket.stage}`}>
+                                            {selectedBasket.stage}
+                                        </span>
                                     )}
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Divider */}
+                        <hr className="order-divider" />
+                            
+                        {/* Order Items */}
+                        <div className="order-items-section">
                             <h3>Order Items</h3>
-                            <ul className="order-items-list">
+                            
+                            <div className="order-items-container">
                                 {selectedBasket.items.map((item) => {
                                     const product = products?.find((p) => p.IDPRODUCT === item.IDPRODUCT);
                                     return (
-                                        <li key={`${item.IDPRODUCT}-${item.SIZECODE}-${item.FORMCODE}`}>
+                                        <div className="order-item-card" key={`${item.IDPRODUCT}-${item.SIZECODE}-${item.FORMCODE}`}>
+
+                                        {/* Left: Product Info */}
+                                        <div className="order-item-left">
                                             <div className="order-item-name">{product?.PRODUCTNAME ?? "Unknown Product"}</div>
                                             <div className="order-item-desc">{product?.DESCRIPTION ?? ""}</div>
-                                            <div className="order-item-meta">
-                                                <span>Qty: {item.QUANTITY}</span>
-                                                <span>Price: ${Number(item.PRICE).toFixed(2)}</span>
+                                        </div>
+                                    
+                                        {/* Right: Quantity & Price */}
+                                        <div className="order-item-right">
+                                            <div className="order-item-row">
+                                                <span className="item-label">Qty:</span>
+                                                <span className="item-value">{item.QUANTITY}</span>
                                             </div>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                            <div className="order-modal-footer">
-                                {isAdmin &&
-                                    <div className="Update-Btn">
-                                        <button>Update Status</button>
+                                            <div className="order-item-row">
+                                                <span className="item-label">Price:</span>
+                                                <span className="item-value">${Number(item.PRICE).toFixed(2)}</span>
+                                            </div>
+                                            <div className="order-item-row">
+                                                <span className="item-label">Subtotal:</span>
+                                                <span className="item-value">${(item.QUANTITY * item.PRICE).toFixed(2)}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                }
-                                <div>
-                                    <p>{selectedBasket.stage}</p>
-                                </div>
-                                <strong>Total: ${Number(selectedBasket.total).toFixed(2)}</strong>
-                            </div>
+                                );
+                            })}
                         </div>
                     </div>
-                )}
-            </div>
+                            
+                {/* Totals Section */}
+                <div className="order-totals-section">
+                <div className="order-totals-inner">
+                    <div className="order-total-row">
+                    <div className="order-total-label">Total Items:</div>
+                    <div className="order-total-value">{selectedBasket.quantity}</div>
+                    </div>
+                    
+                    <div className="order-total-row">
+                    <div className="order-total-label">Order Total:</div>
+                    <div className="order-total-value total-amount">
+                        ${Number(selectedBasket.total).toFixed(2)}
+                    </div>
+                    </div>
+                </div>
+                </div>
+                            
+                {/* Footer Actions */}
+                <div className="order-modal-actions">
+                    {isAdmin && (
+                        <button className="update-btn" onClick={handleUpdateStatus}>
+                            Update Status
+                        </button>
+                    )}
+                    <button className="close-btn" onClick={handleCloseModal}>
+                        Close
+                    </button>
+                </div>
+             </div>
         </div>
+    </div>
+    )}
+</div>
     );
 }

@@ -148,11 +148,11 @@ export default function Orders () {
                             <h3>Order Items</h3>
                             <ul className="order-items-list">
                                 {selectedBasket.items.map((item) => {
-                                    const product = products.find((p) => p.IDPRODUCT === item.IDPRODUCT);
+                                    const product = products?.find((p) => p.IDPRODUCT === item.IDPRODUCT);
                                     return (
                                         <li key={`${item.IDPRODUCT}-${item.SIZECODE}-${item.FORMCODE}`}>
-                                            <div className="order-item-name">{product.PRODUCTNAME}</div>
-                                            <div className="order-item-desc">{product.DESCRIPTION}</div>
+                                            <div className="order-item-name">{product?.PRODUCTNAME ?? "Unknown Product"}</div>
+                                            <div className="order-item-desc">{product?.DESCRIPTION ?? ""}</div>
                                             <div className="order-item-meta">
                                                 <span>Qty: {item.QUANTITY}</span>
                                                 <span>Price: ${Number(item.PRICE).toFixed(2)}</span>

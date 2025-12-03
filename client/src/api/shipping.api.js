@@ -1,4 +1,4 @@
-import { fetchApi } from "../utils/fetchApi";
+import { fetchApi } from "../utils/fetch";
 
 const updateShippingStatus = async function (basketid, date, shipper, shipnum) {
   const response = await fetchApi(`/shipping`, {

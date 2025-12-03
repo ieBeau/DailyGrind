@@ -20,16 +20,16 @@ export default function Basket () {
     const [taxAmount, setTaxAmount] = useState(0);
 
     useEffect(() => {
-        if (!shopper || shoppingCart.products.length === 0) {
+        if (!shopper || Object.keys(shoppingCart.products).length === 0) {
             setQuantity(0);
             setSubtotal(0);
             setTaxAmount(0);
             return;
         }
         
-        const cartTotal = shoppingCart.products.reduce((total, item) => total + item.PRICE * item.QUANTITY, 0);
+        const cartTotal = Object.values(shoppingCart.products).reduce((total, item) => total + item.PRICE * item.QUANTITY, 0);
         
-        setQuantity(shoppingCart.products.reduce((total, item) => total + item.QUANTITY, 0));
+        setQuantity(Object.values(shoppingCart.products).reduce((total, item) => total + item.QUANTITY, 0));
         
         // Task 3: Get Tax Amount
         getOrderTax(shopper?.STATE, cartTotal).then((data) => {
@@ -44,7 +44,7 @@ export default function Basket () {
         setShowCheckout(true);
     }
 
-    const isEmpty = !shoppingCart || shoppingCart.products.length === 0;
+    const isEmpty = !shoppingCart || Object.keys(shoppingCart.products).length === 0;
 
     return (
         <div className='basket'>
@@ -66,7 +66,7 @@ export default function Basket () {
                         <>
                             <div className='basket-list'>
                                 {
-                                    shoppingCart.products.map((item) => (  // ← Change this line
+                                    Object.values(shoppingCart.products).map((item) => (  // ← Change this line
                                         <BasketItem key={item.IDPRODUCT} basket={shoppingCart.basket} item={item} />
                                     ))
                                 }

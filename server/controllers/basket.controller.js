@@ -57,6 +57,7 @@ export const getBasketItems = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
+
         const result = await connection.execute(`
             SELECT * FROM BB_BASKETITEM BI
             LEFT JOIN BB_PRODUCT P
@@ -183,9 +184,8 @@ export const deleteBasketItem = async (req, res) => {
 
         await connection.execute(`
             DELETE FROM BB_BASKETITEM 
-            WHERE IDBASKET = :idbasket AND IDBASKETITEM = :idbasketitem`, 
+            WHERE IDBASKETITEM = :idbasketitem`, 
             { 
-                idbasket: parseInt(req.params.idbasket), 
                 idbasketitem: parseInt(req.params.idbasketitem) 
             }, { autoCommit: true }
         );

@@ -43,8 +43,8 @@ export const getBasketItems = async function (basketId) {
 };
 
 // Task 5: Add Basket Item
-export const updateBasketItem = async (basket, product, quantity) => {
-    const response = await fetchApi(`/basket/${basket.IDBASKET}`, {
+export const addBasketItem = async (basketid, product, quantity) => {
+    const response = await fetchApi(`/basket/${basketid}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -61,6 +61,21 @@ export const updateBasketItem = async (basket, product, quantity) => {
     .then(response => response.json())
     .catch(error => { throw new Error("Network error: " + error.message) });
 
+    return response;
+};
+
+export const deleteBasketItem = async (basketId, basketItemId) => {
+    console.log("Deleting basket item:", basketId, basketItemId);
+    const response = await fetchApi(`/basket/${basketId}/item/${basketItemId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .catch(error => { throw new Error("Network error: " + error.message) });
+   
     return response;
 };
 

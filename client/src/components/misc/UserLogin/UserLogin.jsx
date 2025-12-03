@@ -85,7 +85,7 @@ export default function UserLogin() {
                                     <option value="">-- Select a shopper --</option>
                                     {shoppers.map((sh) => (
                                         <option key={sh.IDSHOPPER} value={sh.IDSHOPPER}>
-                                        {sh.fullname} (ID: {sh.IDSHOPPER})
+                                        {sh.FULLNAME} (ID: {sh.IDSHOPPER})
                                     </option>
                                     ))}
                                 </select>

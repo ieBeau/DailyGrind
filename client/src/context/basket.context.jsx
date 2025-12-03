@@ -13,16 +13,21 @@ export const BasketProvider = ({ children }) => {
     const { shopper } = useShopper();
     const { baskets } = useData();
     
-    const [shoppingCart, setShoppingCart] = useState({basket: null, products: []});
+    const [shoppingCart, setShoppingCart] = useState({basket: null, products: {}});
 
     useEffect(() => {
         const fetchData = async () => {
             const fetchBasket = getCurrentBasket(shopper.IDSHOPPER, baskets)
             const fetchBasketItems = await getBasketItems(fetchBasket.IDBASKET);
-            setShoppingCart({ basket: fetchBasket, products: fetchBasketItems });
+            const productsById = (Array.isArray(fetchBasketItems) ? fetchBasketItems : []).reduce((acc, item) => {
+                if (item && item.IDPRODUCT != null) acc[item.IDPRODUCT] = item;
+                return acc;
+            }, {});
+            setShoppingCart({ basket: fetchBasket, products: productsById });
+            return;
         };
         if (shopper?.IDSHOPPER) fetchData();
-        else setShoppingCart({ basket: null, products: [] });
+        else setShoppingCart({ basket: null, products: {} });
     }, [shopper, baskets]);
 
     return (

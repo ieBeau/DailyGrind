@@ -20,6 +20,18 @@
   gap: 1rem;
 }
 
+/* Nav Link Styling */
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  color: #b87334;
+  transform: translateY(-1px);
+}
+
+.nav-link.active:hover,
+.nav-link[aria-current="page"]:hover {
+  color: #b87334;
+}
+
 .navbar {
   background-color: #0a0a0a;
   padding: 16px 0;
@@ -33,6 +45,11 @@
 
 .nav-right .nav-link:last-child {
   margin-right: 10px;
+}
+
+.basket-link {
+  display: flex;
+  vertical-align: middle;
 }
 
 .nav-link .basket-count {
@@ -63,7 +80,7 @@
 
 .nav-link:hover {
   color: #b87334;
-  background-color: rgba(184, 115, 52, 0.1);
+  /* background-color: rgba(184, 115, 52, 0.1); */
 }
 
 /* Responsive For Mobile */

@@ -387,7 +387,6 @@ export default function Products () {
                             type="number"
                             min="0"
                             max="9999"
-                            maxLength={4}
                             value={newProduct.STOCK}
                             onChange={(e) => setNewProduct({ ...newProduct, STOCK: Math.min(9999, Math.max(0, e.target.value)) })}
                             placeholder="Enter product stock"                            

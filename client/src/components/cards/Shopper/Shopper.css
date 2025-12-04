@@ -48,6 +48,16 @@
     margin: 0;
 }
 
+/* Shopper Detail */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+}
+.detail-row p {
+    text-align: right;
+}
+
 /* ID Display */
 .id {
     opacity: 0.6;

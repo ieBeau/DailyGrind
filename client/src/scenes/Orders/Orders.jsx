@@ -267,7 +267,7 @@ export default function Orders () {
                                 
                                 <div className="order-detail-value">
                                     {isAdmin && (
-                                        <input placeholder="Shipper Name (5 chars)" name="UPS" className="form-input" maxLength={5} />
+                                        <input placeholder="Shipper Name (5 chars)" name="shipper" className="form-input" maxLength={5} />
                                     )}
                                 </div>
                             </div>

@@ -92,7 +92,7 @@ export default function BasketItemCard({ basket, item }) {
                             <td className="basket-item-total">Total</td>
                         </tr>
                         <tr>
-                            <td><input className="basket-item-quantity" type="number" min="0" max="99" value={quantity} onChange={e => handleChange(e.target.value)} /></td>
+                            <td><input className="basket-item-quantity" type="number" min="0" max="99" maxLength={2} value={quantity} onChange={e => handleChange(e.target.value)} /></td>
                             <td className="basket-item-total-value">${(item.PRICE * quantity).toFixed(2)}</td> 
                         </tr>
                         <tr>

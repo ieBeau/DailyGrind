@@ -84,8 +84,7 @@ export default function Orders () {
         };
 
         await updateShippingStatus(payload)
-        .then((data) => {
-            
+        .then(() => {
             setStatusMessage({ type: "success", text: "Order status updated successfully!" });
 
             setBaskets((prevBaskets) => {
@@ -268,7 +267,7 @@ export default function Orders () {
                                 
                                 <div className="order-detail-value">
                                     {isAdmin && (
-                                        <input placeholder="Shipper Name" name="shipper" className="form-input" />
+                                        <input placeholder="Shipper Name (5 chars)" name="UPS" className="form-input" maxLength={5} />
                                     )}
                                 </div>
                             </div>
@@ -282,7 +281,7 @@ export default function Orders () {
 
                                 <div className="order-detail-value">
                                     {isAdmin && (
-                                        <input placeholder="Tracking #" name="trackingNumber" className="form-input" />
+                                        <input placeholder="Tracking #" name="trackingNumber" className="form-input" maxLength={20} />
                                     )}
                                 </div>
                             </div>
@@ -334,7 +333,7 @@ export default function Orders () {
                             {/* Additional Details */}
                             <div className="order-notes-container">
                                 <div className="order-detail-label">Notes:</div>
-                                <textarea disabled={!isAdmin} name="notes" className="order-notes-value" defaultValue={selectedBasket.notes} />
+                                <textarea disabled={!isAdmin} name="notes" className="order-notes-value" defaultValue={selectedBasket.notes} maxLength={50} />
                             </div>
 
                             <div className="order-totals-inner">

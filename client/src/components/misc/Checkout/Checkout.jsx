@@ -21,8 +21,6 @@ export default function Checkout({ amount, onClose }) {
 
   const phoneNumber = formatPhoneNumber(shopper ? shopper.PHONE : "");
 
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-
   const handleBasketCheckout = () => {
 
     const confirmButton = document.getElementById('confirm');
@@ -30,8 +28,6 @@ export default function Checkout({ amount, onClose }) {
     // Task 4: Update Basket Shipping Status
     updateShippingStatus(shoppingCart.basket)
     .then(_ => {
-        setPaymentConfirmed(true);
-
         confirmButton.innerText = "Purchase Confirmed!";
         confirmButton.style.backgroundColor = 'green';
 

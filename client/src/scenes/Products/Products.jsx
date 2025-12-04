@@ -56,6 +56,8 @@ export default function Products () {
 
   // Task 2: Create New Product
   const handleAddProduct = async (e) => {
+      e.preventDefault();
+
       if (!newProduct.PRODUCTNAME || !newProduct.DESCRIPTION || !newProduct.PRICE) {
           alert('Please fill in product name, description, and price.');
           return;
@@ -153,6 +155,11 @@ export default function Products () {
     });
   };
 
+  const handleAddProductClose = () => {
+    setNewProduct(defaultProduct);
+    setShowAddModal(false);
+  }
+
   const filteredProducts = products.filter(product =>
     product.PRODUCTNAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.DESCRIPTION?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -227,15 +234,17 @@ export default function Products () {
                         >
                           -  
                         </button>
+
                         <span className="quantity-display">
                           {shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0}
                         </span>
+
                         <button
                           className="add-btn"
                           disabled={!shopper}
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleQuantityChange(product, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1);
+                            handleQuantityChange(product, Math.min(99, (shoppingCart.products[product.IDPRODUCT]?.QUANTITY || 0) + 1));
                           }}
                         >
                           +
@@ -299,6 +308,7 @@ export default function Products () {
                         <label className="form-label">New Product Description:</label>
                         <textarea className="form-textarea"
                             rows="3"
+                            maxLength={100}
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
                             placeholder="Enter product description"
@@ -317,7 +327,7 @@ export default function Products () {
       {/* Add New Product */}
       {showAddModal && (
         <div className="popup-overlay" onClick={() => setShowAddModal(false)}>
-          <div className="popup-message" onClick={(e) => e.stopPropagation()}>                        
+          <form className="popup-message" onClick={(e) => e.stopPropagation()}  onSubmit={handleAddProduct}>                        
             <div className="card margin-bottom-large">
                 <div className="card-header">
                     <h2 className="heading-tertiary">Add New Product</h2>
@@ -328,6 +338,7 @@ export default function Products () {
                         <label className="form-label">Product Name:</label>
                         <input className="form-input"
                             type="text"
+                            maxLength={25}
                             value={newProduct.PRODUCTNAME}
                             onChange={(e) => setNewProduct({ ...newProduct, PRODUCTNAME: e.target.value })}
                             placeholder="Enter product name"
@@ -338,6 +349,7 @@ export default function Products () {
                         <label className="form-label">Description:</label>
                         <textarea className="form-textarea"
                             rows="3"
+                            maxLength={100}
                             value={newProduct.DESCRIPTION}
                             onChange={(e) => setNewProduct({ ...newProduct, DESCRIPTION: e.target.value })}
                             placeholder="Enter product description"
@@ -348,6 +360,7 @@ export default function Products () {
                         <label className="form-label">Image Filename:</label>
                         <input className="form-input"
                             type="text"
+                            maxLength={25}
                             value={newProduct.PRODUCTIMAGE}
                             onChange={(e) => setNewProduct({ ...newProduct, PRODUCTIMAGE: e.target.value })}
                             placeholder="Enter image filename"
@@ -359,8 +372,11 @@ export default function Products () {
                         <input className="form-input"
                             type="number"
                             step="0.01"
+                            min="0"
+                            max="9999.99"
+                            maxLength={7}
                             value={newProduct.PRICE}
-                            onChange={(e) => setNewProduct({ ...newProduct, PRICE: e.target.value })}
+                            onChange={(e) => setNewProduct({ ...newProduct, PRICE: Math.min(9999.99, Math.max(0, e.target.value)) })}
                             placeholder="Enter product price"
                         />
                     </div>
@@ -369,8 +385,11 @@ export default function Products () {
                         <label className="form-label">Stock Quantity:</label>
                         <input className="form-input"
                             type="number"
+                            min="0"
+                            max="9999"
+                            maxLength={4}
                             value={newProduct.STOCK}
-                            onChange={(e) => setNewProduct({ ...newProduct, STOCK: e.target.value })}
+                            onChange={(e) => setNewProduct({ ...newProduct, STOCK: Math.min(9999, Math.max(0, e.target.value)) })}
                             placeholder="Enter product stock"                            
                         />
                     </div>
@@ -385,12 +404,12 @@ export default function Products () {
                         </select>
                     </div>
                 </div>
-                    <button className="primary-button margin-top-large" onClick={handleAddProduct}>
+                    <button className="primary-button margin-top-large" type='submit'>
                         Add Product
                     </button>                
                 </div>                
-            <button className="primary-button margin-top-large" onClick={() => setShowAddModal(false)}>Close</button>
-          </div>
+            <button className="primary-button margin-top-large" type='reset' onClick={handleAddProductClose}>Close</button>
+          </form>
         </div>
       )}
     </div>

@@ -158,7 +158,7 @@ export default function Products () {
   const handleAddProductClose = () => {
     setNewProduct(defaultProduct);
     setShowAddModal(false);
-  }
+  };
 
   const filteredProducts = products.filter(product =>
     product.PRODUCTNAME?.toLowerCase().includes(searchTerm.toLowerCase()) ||

@@ -66,8 +66,7 @@ export default function UserLogin() {
                 (
                     <div className="user-login-background" onMouseDown={(e) => { if (e.target === e.currentTarget) setLoginForm(false); }}>
                         <form className="user-login-form" onSubmit={handleLogin}>
-                            <h2>Admin Login</h2>
-                            
+                            <h2>Admin Login</h2>                            
                             <div className="form-group">
                                 <label className="form-label">Username:</label>
                                 <input type="text" name="username" className="form-input" />
@@ -76,6 +75,22 @@ export default function UserLogin() {
                                 <label className="form-label">Password:</label>
                                 <input type="password" name="password" className="form-input" />
                             </div>
+
+                            {/* Demo Credentials Section */}
+                            <div className="demo-credentials">
+                                <p className="demo-credentials-header">🔓 Demo Credentials for Grading</p>
+                                <div className="demo-credentials-box">
+                                    <div className="demo-credential-row">
+                                        <span className="demo-credential-label">Username:</span>
+                                        <code className="demo-credential-value">admin</code>
+                                    </div>
+                                    <div className="demo-credential-row">
+                                        <span className="demo-credential-label">Password:</span>
+                                        <code className="demo-credential-value">Password123</code>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* End Demo Credentials Section */}
 
                             <h2>User Login</h2>
 

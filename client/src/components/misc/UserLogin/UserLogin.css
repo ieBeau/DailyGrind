@@ -85,6 +85,52 @@
     cursor: not-allowed;
 }
 
+/* Demo Credentials Section */
+.demo-credentials {
+    margin: 1rem 0 1.5rem 0;
+}
+
+.demo-credentials-header {
+    color: #b87334;
+    font-family: "Lato", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0.5rem 0 0.75rem 0;
+    text-align: center;
+}
+
+.demo-credentials-box {
+    background-color: #1a1a1a;
+    border: 2px solid #3d3d3d;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    font-family: "Lato", sans-serif;
+}
+
+.demo-credential-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.demo-credential-label {
+    color: #b87334;
+    font-weight: 600;
+    min-width: 80px;
+}
+
+.demo-credential-value {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #b87334;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    border: 1px solid #3d3d3d;
+}
+
 /* Cancel button */
 .user-login-form button:nth-child(2) {
     background-color: transparent;

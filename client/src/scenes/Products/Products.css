@@ -156,10 +156,6 @@ body {
   max-width: 100%;
   box-sizing: border-box;
 }
-
-/* CRITICAL: DO NOT CHANGE to overflow:scroll
-   Users cannot see what they type with forced scrolling.
-   Auto-expansion is required for basic usability. */
    
 .form-textarea {
   width: 100%;

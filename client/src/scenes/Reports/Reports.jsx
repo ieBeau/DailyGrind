@@ -104,7 +104,7 @@ export default function Reports () {
 
                                 <div className='shopper-detail-row'>
                                     <label>Total Purchases:</label>
-                                    <p>{accountInfo?.totalPurchase ? `$${accountInfo?.totalPurchase.toFixed(2)}` : "--"}</p>
+                                    <p>{accountInfo?.totalPurchase ? `$${accountInfo?.totalPurchase.toFixed(2)}` : accountInfo?.totalPurchase === 0 ? "$0.00" : "--"}</p>
                                 </div>
                             </div>
                         </div>

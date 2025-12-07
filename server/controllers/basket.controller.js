@@ -66,8 +66,13 @@ export const getBasketItems = async (req, res) => {
         `, {
             idbasket: req.params.idbasket
         });
-
-        res.status(200).json(result.rows);
+        
+        const data = result.rows.map(row => {
+            if (row.PRODUCTIMAGE) row.PRODUCTIMAGE = `data:${row.PRODUCTIMAGE_TYPE};base64,${row.PRODUCTIMAGE.toString('base64')}`;
+            return row;
+        });
+        
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     } finally {

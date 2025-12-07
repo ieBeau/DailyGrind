@@ -303,6 +303,13 @@ export default function Orders () {
                                             {/* Left: Product Info */}
                                             <div className="order-item-left">
                                                 <div className="order-item-name">{product?.PRODUCTNAME ?? "Unknown Product"}</div>
+                                                <div className="order-item-image">
+                                                    <img src={item.PRODUCTIMAGE} alt={product.PRODUCTNAME} />
+                                                </div>
+                                            </div>
+
+                                            {/* Center: Description */}
+                                            <div className="order-item-center">
                                                 <div className="order-item-desc">{product?.DESCRIPTION ?? ""}</div>
                                             </div>
                                         

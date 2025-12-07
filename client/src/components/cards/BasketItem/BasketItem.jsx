@@ -83,7 +83,9 @@ export default function BasketItemCard({ basket, item }) {
                 <p>${item.PRICE.toFixed(2)}</p>
             </div>
             <div className="basket-item-body">
-                <img src={item.IMAGEURL} alt={item.PRODUCTNAME} className="basket-item-image" />
+                <div className="basket-item-image">
+                    <img src={item.PRODUCTIMAGE} alt={item.PRODUCTNAME} />
+                </div>
                 <p className="basket-item-description">{item.DESCRIPTION}</p>
                 <table>
                     <tbody>

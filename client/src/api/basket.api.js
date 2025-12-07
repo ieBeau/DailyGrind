@@ -1,4 +1,5 @@
 import { fetchApi } from "../utils/fetch";
+const defaultImage = "images/logos/daily-grind-logo.png";
 
 export const getBaskets = async () => {
     const response =  await fetchApi(`/basket`, {
@@ -37,6 +38,10 @@ export const getBasketItems = async function (basketId) {
         }
     })
     .then(response => response.json())
+    .then(data => data.map(product => {
+        if (!product.PRODUCTIMAGE) return { ...product, PRODUCTIMAGE: defaultImage };
+        return product;
+    }))
     .catch(error => { throw new Error("Network error: " + error.message) });
 
     return response;
@@ -80,13 +85,21 @@ export const deleteBasketItem = async (basketId, basketItemId) => {
 
 // Task 4: Update Shipping Status
 export const updateShippingStatus = async (data) => {
-    const response = await fetchApi(`/basket/${data.idBasket}/shipping`, {
+    const body = {
+        idStage: data.idStage,
+        dateShipped: data.dateShipped,
+        shipper: data.shipper,
+        trackingNumber: data.trackingNumber,
+        notes: data.notes
+    };
+
+    const response = await fetchApi(`/basket/${data.IDBASKET}/shipping`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(body)
     })
     .then(response => response.json())
     .catch(error => { throw new Error("Network error: " + error.message) });

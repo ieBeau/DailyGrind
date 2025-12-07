@@ -61,11 +61,22 @@
 }
 
 .basket-item-image {
-    width: 75px;
-    height: 75px;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
     border-radius: 8px;
-    border: 1px solid #3d3d3d;
-    object-fit: cover;
+}
+
+.basket-item-image img:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in;
+}
+
+.basket-item-image img {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    overflow: visible;
 }
 
 .basket-item-description {

@@ -36,7 +36,7 @@ export const DataProvider = ({ children }) => {
             handleBaskets(basketsData);
             
             setShoppers(shopperAdditions);
-            setProducts(productsData);
+            setProducts(productsData.sort((a, b) => a.IDPRODUCT - b.IDPRODUCT));
             setIsLoading(false);
         }
         fetchData();
@@ -45,10 +45,9 @@ export const DataProvider = ({ children }) => {
     const refreshProducts = async () => {
         try {
             const productsData = await getProducts();
-            setProducts(productsData);
+            setProducts(productsData.sort((a, b) => a.IDPRODUCT - b.IDPRODUCT));
         } catch (error) {
             console.error("Failed to refresh products:", error);
-            // Optionally, setProducts([]); or handle error state here
         }
     }
 

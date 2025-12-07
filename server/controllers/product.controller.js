@@ -1,4 +1,6 @@
+import OracleDB from 'oracledb';
 import { getConnection } from '../database/oracleDB.js';
+import { bufferImage } from '../utils/bufferImage.js';
 
 const PRODUCTS = 'BB_PRODUCT';
 
@@ -9,7 +11,10 @@ export const getAllProducts = async (req, res) => {
 
         const products = await connection.execute(`SELECT * FROM ${PRODUCTS}`);
 
-        const data = products.rows;
+        const data = products.rows.map(row => {
+            if (row.PRODUCTIMAGE) row.PRODUCTIMAGE = `data:${row.PRODUCTIMAGE_TYPE};base64,${row.PRODUCTIMAGE.toString('base64')}`;
+            return row;
+        });
 
         res.status(200).json(data);
     } catch (error) {
@@ -34,7 +39,9 @@ export const getProduct = async (req, res) => {
 
         if (!product) return res.status(404).json({ message: 'Product not found' });
 
-        const data = product.rows;
+        let data = product.rows;
+        if (data.PRODUCTIMAGE) data.PRODUCTIMAGE = `data:${data.PRODUCTIMAGE_TYPE};base64,${data.PRODUCTIMAGE.toString('base64')}`;
+
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -54,21 +61,34 @@ export const createProduct = async (req, res) => {
     let connection;
     try {
         connection = await getConnection();
+        
+        let buffer = null;
+        if (req.file) buffer = await bufferImage(req.file);
 
-        const product = { 
+        let product = { 
             ...req.body,
-            PRICE:  parseFloat(req.body.PRICE),
-            ACTIVE: parseInt(req.body.ACTIVE)
+            price:  parseFloat(req.body.price),
+            active: parseInt(req.body.active),
+            productimage: buffer,
+            productimage_type: req.file ? req.file.mimetype : null
         };
 
-        await connection.execute('BEGIN PROD_ADD_SP(:in_product_name, :in_description, :in_product_image, :in_price, :in_active); END;', {
-            in_product_name:    product.PRODUCTNAME,    // Require: Task 2
-            in_description:     product.DESCRIPTION,    // Require: Task 2
-            in_product_image:   product.PRODUCTIMAGE,   // Require: Task 2
-            in_price:           product.PRICE,          // Require: Task 2
-            in_active:          product.ACTIVE          // Require: Task 2
+        await connection.execute('BEGIN PROD_ADD_SP(:in_product_name, :in_description, :in_product_image, :in_product_image_type, :in_price, :in_active); END;', {
+            in_product_name:        product.productname,            // Require: Task 2
+            in_description:         product.description,            // Require: Task 2
+            in_product_image:       {                               // Require: Task 2
+                                        val: product.productimage, 
+                                        type: OracleDB.BLOB, 
+                                        dir: OracleDB.BIND_IN 
+                                    },      
+            in_product_image_type:  product.productimage_type,      // Require: Task 2
+            in_price:               product.price,                  // Require: Task 2
+            in_active:              product.active                  // Require: Task 2
         }, { autoCommit: true });
 
+        if (req.file) product.productimage = `data:${product.productimage_type};base64,${product.productimage.toString('base64')}`;
+        else product.productimage = null;
+        
         res.status(201).json({ message: 'Product created successfully', product });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -92,7 +112,7 @@ export const updateProduct = async (req, res) => {
         const product = {
             productid:   parseInt(req.params.id),
             description: req.body.description
-        }
+        };
 
        await connection.execute('BEGIN group_task_1(:in_productid, :in_description); END;', {
             in_productid:   product.productid,     // Require: Task 1

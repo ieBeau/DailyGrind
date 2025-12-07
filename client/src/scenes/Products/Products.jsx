@@ -4,8 +4,8 @@ import { addBasketItem, deleteBasketItem } from '../../api/basket.api';
 import { useBasket } from '../../context/basket.context'; 
 import { useAdmin } from '../../context/admin.context';
 import { useData } from '../../context/data.context';
-import { createProduct, deleteProductById, updateProductDescription } from '../../api/product.api';
 import { useShopper } from '../../context/shopper.context';
+import { createProduct, deleteProductById, updateProductDescription } from '../../api/product.api';
 
 export default function Products () {
 
@@ -62,8 +62,16 @@ export default function Products () {
           alert('Please fill in product name, description, and price.');
           return;
       }
+      
+      const formData = new FormData();
+      formData.append('image', newProduct.PRODUCTIMAGE);
+      formData.append('productname', newProduct.PRODUCTNAME);
+      formData.append('description', newProduct.DESCRIPTION);
+      formData.append('price', newProduct.PRICE);
+      formData.append('stock', newProduct.STOCK);
+      formData.append('active', newProduct.ACTIVE);
 
-      await createProduct(newProduct)
+      await createProduct(formData)
       .then(() => {
           refreshProducts();
           setNewProduct(defaultProduct);
@@ -72,6 +80,25 @@ export default function Products () {
       .catch((error) => {
           console.error('Error adding product: ', error);
       });
+  };
+  
+  const handleChange = (e) => {
+      const { files } = e.target;
+      if (files) setNewProduct({ ...newProduct, PRODUCTIMAGE: files[0] }) ;
+  };
+
+  const handleImageSearch = (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      const img = document.getElementById('new-image-preview');
+      if (img) img.src = url;
+
+      const nameSpan = document.getElementById('new-image-name');
+      if (nameSpan) nameSpan.textContent = file.name;
+
+      handleChange(e);
   };
 
   const handleQuantityChange = async (product, newQuantity) => {
@@ -166,7 +193,7 @@ export default function Products () {
   );
 
   if (isLoading) return <div className="loading">Loading products...</div>;
-
+  
   return (
     <div className="products-page">
       <div className="content-wrapper">
@@ -208,6 +235,7 @@ export default function Products () {
               <thead>
                 <tr>
                   <th style={{textAlign: 'center'}}>Product ID</th>
+                  <th style={{textAlign: 'center'}}>Image</th>
                   <th style={{textAlign: 'center'}}>Product Name</th>
                   <th style={{textAlign: 'center'}}>Description</th>
                   <th style={{textAlign: 'center'}}>Price</th>
@@ -216,9 +244,14 @@ export default function Products () {
                 </tr>
               </thead>  
               <tbody>
-                {filteredProducts.map((product) => (                  
+                {filteredProducts.map((product) => (         
                   <tr key={product.IDPRODUCT} onClick={() => setSelectedProduct(product)}>
                     <td>{product.IDPRODUCT}</td>
+                    <td>
+                      <div className="product-image">
+                        <img src={product.PRODUCTIMAGE} alt={product.PRODUCTNAME} />
+                      </div>
+                    </td>
                     <td className="product-name">{product.PRODUCTNAME}</td>
                     <td className="product-description">{product.DESCRIPTION}</td>
                     <td className="product-price">${product.PRICE.toFixed(2)}</td>                    
@@ -345,6 +378,27 @@ export default function Products () {
                         />
                     </div>
 
+                    <div className="form-group image-upload-group">
+                      <label className='product-image preview-container' htmlFor='image-input' >
+                        <img
+                            id="new-image-preview"
+                            style={{ display: newProduct?.PRODUCTIMAGE ? 'block' : 'none' }}
+                        />
+                        <span id="new-image-name" hidden={newProduct?.PRODUCTIMAGE ? true : false}>
+                          Upload Image <span className='search-icon'>🔍</span>
+                        </span>
+                      </label>
+
+                      <input
+                          type="file"
+                          id="image-input"
+                          name="image"
+                          accept="image/*"
+                          onChange={handleImageSearch}
+                      />
+
+                    </div>
+
                     <div className="form-group full-width">
                         <label className="form-label">Description:</label>
                         <textarea className="form-textarea"
@@ -353,17 +407,6 @@ export default function Products () {
                             value={newProduct.DESCRIPTION}
                             onChange={(e) => setNewProduct({ ...newProduct, DESCRIPTION: e.target.value })}
                             placeholder="Enter product description"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label">Image Filename:</label>
-                        <input className="form-input"
-                            type="text"
-                            maxLength={25}
-                            value={newProduct.PRODUCTIMAGE}
-                            onChange={(e) => setNewProduct({ ...newProduct, PRODUCTIMAGE: e.target.value })}
-                            placeholder="Enter image filename"
                         />
                     </div>
 
@@ -400,6 +443,16 @@ export default function Products () {
                             onChange={(e) => setNewProduct({ ...newProduct, ACTIVE: e.target.value })}>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">  
+                        <label className="form-label">Type:</label>
+                        <select className="form-select"
+                            value={newProduct.TYPE}
+                            onChange={(e) => setNewProduct({ ...newProduct, TYPE: e.target.value })}>
+                            <option value="C">Coffee</option>
+                            <option value="M">Machine</option>
                         </select>
                     </div>
                 </div>
